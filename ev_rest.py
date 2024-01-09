@@ -33,7 +33,7 @@ def require_api_key(view_function):
 
     return decorated_function
 
-@app.route('/api/get_charger_list', methods=['POST'])
+@app.route('/api/get_charger_list', methods=['POST'], endpoint='/api/get_charger_list')
 @require_api_key
 def get_charger_list():
     try:
@@ -56,7 +56,7 @@ def get_charger_list():
     except Exception as e:
         return jsonify({'result': 'error', 'message': str(e)})
 
-@app.route('/api/send_message', methods=['POST'])
+@app.route('/api/send_message', methods=['POST'], endpoint='/api/send_message')
 @require_api_key
 def store_data():
     try:
