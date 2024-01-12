@@ -45,7 +45,7 @@ def get_charger_list():
             cs = str(data['crgr_stn_nm'])
 
             if cs:
-                rows = retr_charger_list()
+                rows = retr_charger_list(cs)
 
                 return jsonify({'result': 'success', 'message': 'ocpp msg sent successfully', 'data':rows})
             else:
