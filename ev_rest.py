@@ -4,6 +4,7 @@ from flask import Flask, request, jsonify
 from confluent_kafka import Consumer, Producer
 from csms_backend import retr_charger_list, retr_charger_log
 
+
 app = Flask(__name__)
 app.config['API_KEY'] = os.environ.get('API_KEY')
 
