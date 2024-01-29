@@ -50,4 +50,4 @@ deploy-job:      # This job runs in the deploy stage.
     - rsync -av --exclude='.git/' $CI_PROJECT_DIR/ /home/kabina/prd/csms-server/  # 파일을 목적지 디렉토리로 복사
   rules:  # 'only' 대신에 'rules' 키워드 사용 (변경 감지를 통해 실행 여부 결정)
     - changes:
-        - '**/*'  # 변경 감지를 통해 실행 여부 결정 (필요에 따라 변경)
+        - '*/*'  # 변경 감지를 통해 실행 여부 결정 (필요에 따라 변경)
