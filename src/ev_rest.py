@@ -2,7 +2,7 @@ import json
 import os
 from flask import Flask, request, jsonify
 from confluent_kafka import Consumer, Producer
-from csms_backend import retr_charger_list
+from csms_backend import retr_charger_list, retr_charger_log
 
 app = Flask(__name__)
 app.config['API_KEY'] = os.environ.get('API_KEY')
@@ -46,6 +46,28 @@ def get_charger_list():
 
             if cs:
                 rows = retr_charger_list(cs)
+
+                return jsonify({'result': 'success', 'message': 'ocpp msg sent successfully', 'data':rows})
+            else:
+                return jsonify({'result': 'error', 'message': 'Key and value are required'})
+        else:
+            return jsonify({'result': 'error', 'message': 'No data provided'})
+
+    except Exception as e:
+        return jsonify({'result': 'error', 'message': str(e)})
+
+@app.route('/api/get_charger_log', methods=['POST'], endpoint='/api/get_charger_log')
+@require_api_key
+def get_charger_list():
+    try:
+        # POST 요청에서 데이터 추출
+        data = request.get_json()
+
+        if data:
+            cs = str(data['crgr_stn_nm'])
+
+            if cs:
+                rows = retr_charger_log()
 
                 return jsonify({'result': 'success', 'message': 'ocpp msg sent successfully', 'data':rows})
             else:
