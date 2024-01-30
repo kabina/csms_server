@@ -42,12 +42,8 @@ lint-test-job:   # This job also runs in the test stage.
     - echo "No lint issues found."
 
 deploy-job:      # This job runs in the deploy stage.
-  stage: deploy
-  only:
-    - master  # 브랜치 설정 (필요에 따라 변경)
+  stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
+  environment: production
   script:
-    - mkdir -p /home/kabina/prd/csms-server  # 대상 디렉토리 생성
-    - rsync -av --exclude='.git/' $CI_PROJECT_DIR/ /home/kabina/prd/csms-server/  # 파일을 목적지 디렉토리로 복사
-  rules:  # 'only' 대신에 'rules' 키워드 사용 (변경 감지를 통해 실행 여부 결정)
-    - changes:
-        - '*/*'  # 변경 감지를 통해 실행 여부 결정 (필요에 따라 변경)
+    - echo "Deploying application..."
+    - echo "Application successfully deployed."
