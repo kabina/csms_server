@@ -21,6 +21,13 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - deploy
 
+variables:
+  DEPLOY_DIR: /var/gitlab-runner/csms-server
+  PREVIOUS_COMMIT: $CI_COMMIT_BEFORE_SHA
+
+before_script:
+  - mkdir -p $DEPLOY_DIR
+
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
@@ -45,14 +52,17 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   environment: production
   script:
-    - mkdir -p deploy  # deploy 디렉토리 생성 (없는 경우)
     - |
-      changed_files=$(git diff --name-only $CI_COMMIT_SHA $CI_COMMIT_BEFORE_SHA)
-      if [ -n "$changed_files" ]; then
-        echo "Copying changed files to deploy directory..."
-        rsync -av --files-from=<(echo "$changed_files" | sed 's!^!/opt/dev/csms-server/src/!') / /opt/dev/csms-server/deploy/
+      if [ -n "$PREVIOUS_COMMIT" ]; then
+        # Find changed files between previous and current commit
+        CHANGED_FILES=$(git diff --name-only "$PREVIOUS_COMMIT" "$CI_COMMIT_SHA");
+        # Copy only changed files to the deploy directory
+        if [ -n "$CHANGED_FILES" ]; then
+          cp -r $CHANGED_FILES $DEPLOY_DIR/;
+        fi
       else
-        echo "No changes detected. Skipping deployment."
+        # If there is no previous commit (first build), copy all files
+        cp -r $CI_PROJECT_DIR/src/* $DEPLOY_DIR/;
       fi
   only:
-    - main  # 예시: master 브랜치에 푸시될 때만 실행하도록 설정
+    - main  # Adjust the branch as needed
