@@ -45,5 +45,14 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy  # It only runs when *both* jobs in the test stage complete successfully.
   environment: production
   script:
-    - echo "Deploying application..."
-    - echo "Application successfully deployed."
+    - mkdir -p deploy  # deploy 디렉토리 생성 (없는 경우)
+    - |
+      changed_files=$(git diff --name-only $CI_COMMIT_SHA $CI_COMMIT_BEFORE_SHA)
+      if [ -n "$changed_files" ]; then
+        echo "Copying changed files to deploy directory..."
+        rsync -av --files-from=<(echo "$changed_files" | sed 's/^/src\//') ./ deploy/
+      else
+        echo "No changes detected. Skipping deployment."
+      fi
+  only:
+    - main  # 예시: master 브랜치에 푸시될 때만 실행하도록 설정
