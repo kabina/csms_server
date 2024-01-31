@@ -50,7 +50,7 @@ deploy-job:      # This job runs in the deploy stage.
       changed_files=$(git diff --name-only $CI_COMMIT_SHA $CI_COMMIT_BEFORE_SHA)
       if [ -n "$changed_files" ]; then
         echo "Copying changed files to deploy directory..."
-        rsync -av --files-from=<(echo "$changed_files" | sed 's/^/src\//') ./ deploy/
+        rsync -av --files-from=<(echo "$changed_files" | sed 's!^!/opt/dev/csms-server/src/!') / /opt/dev/csms-server/deploy/
       else
         echo "No changes detected. Skipping deployment."
       fi
