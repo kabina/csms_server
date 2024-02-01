@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Gunicorn 프로세스 찾기
 GUNICORN_PID=$(pgrep gunicorn)
