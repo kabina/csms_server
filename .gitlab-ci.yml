@@ -22,7 +22,7 @@ stages:          # List of stages for jobs, and their order of execution
   - deploy
 
 variables:
-  DEPLOY_DIR: /var/gitlab-runner/csms-server
+  DEPLOY_DIR: /var/gitlab-runner/prd/csms-server
   PREVIOUS_COMMIT: $CI_COMMIT_BEFORE_SHA
 
 before_script:
