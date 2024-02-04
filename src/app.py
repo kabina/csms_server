@@ -4,12 +4,12 @@ from flask import Flask, request, jsonify
 from confluent_kafka import Consumer, Producer
 from csms_backend import retr_charger_list
 
-# dockerfile changed gunicorn add maybe last
+# dockerfile changed gunicorn add maybe last plz
 app = Flask(__name__)
 app.config['API_KEY'] = os.environ.get('API_KEY')
 
 # Kafka 서버 및 topic 설정
-bootstrap_servers = 'juha.iptime.org:29092'
+bootstrap_servers = 'nheo.duckdns.org:29092'
 topic = 'topic-to-charger'
 # kafka topic 생성
 # docker-compose exec kafka kafka-topics --create --topic topic-to-charger --bootstrap-server kafka:9092 --replication-factor 1 --partitions 1
