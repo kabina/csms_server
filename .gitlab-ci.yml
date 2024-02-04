@@ -60,7 +60,8 @@ deploy-job:      # This job runs in the deploy stage.
 
 deploy-job-docker:      # This job runs in the deploy stage.
   stage: deploy
-  tags: docker
+  tags: 
+    - docker
   script:
     - echo "Docker deploy Start ..."
     - if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker stop $DOCKER_IMAGE_NAME; fi
