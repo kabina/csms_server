@@ -52,7 +52,7 @@ lint-test-job:   # This job also runs in the test stage.
     - echo "No lint issues found."
 
 deploy-job:      # This job runs in the deploy stage.
-  stage: deploy
+  stage: docker-deploy
   script:
     - echo "deploy Start ..."
       #- mkdir -p /var/gitlab-runner/csms-server  # 대상 디렉토리 생성
@@ -61,7 +61,7 @@ deploy-job:      # This job runs in the deploy stage.
     - echo "deploy complete ..."
 
 deploy-job-docker:      # This job runs in the deploy stage.
-  stage: docker-deploy
+  stage: deploy
   script:
     #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
     - echo "Docker deploy Start ..."
