@@ -26,11 +26,11 @@ variables:
   DOCKER_IMAGE_TAG: "latest"
     #CI_SERVER_TLS_CA_FILE: "/etc/gitlab-runner/nheo.duckdns.org.crt"
 
-before_script:
-    - apt update -y
-      #- apt install -y docker.io
-    - apt install -y rsync
-
+    #before_script:
+    #- apt update -y
+    #- apt install -y docker.io
+    #- apt install -y rsync
+    #
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
@@ -71,6 +71,7 @@ deploy-job:      # This job runs in the deploy stage.
   script:
     #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
     - echo "Docker deploy Start ..."
+    - docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
     - if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker stop $DOCKER_IMAGE_NAME; fi
     # 중지된 컨테이너가 있다면 삭제
     - if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker rm $DOCKER_IMAGE_NAME; fi
