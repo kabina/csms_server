@@ -26,6 +26,10 @@ variables:
   DOCKER_IMAGE_TAG: "latest"
     #CI_SERVER_TLS_CA_FILE: "/etc/gitlab-runner/nheo.duckdns.org.crt"
 
+before_script:
+    - apt update -y
+    - apt install -y docker.io
+    - apt install -y rsync
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
