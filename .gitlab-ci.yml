@@ -24,7 +24,7 @@ stages:          # List of stages for jobs, and their order of execution
 variables:
   DOCKER_IMAGE_NAME: "csms-server"
   DOCKER_IMAGE_TAG: "latest"
-  CI_SERVER_TLS_CA_FILE: "/etc/gitlab-runner/nheo.duckdns.org.crt"
+    #CI_SERVER_TLS_CA_FILE: "/etc/gitlab-runner/nheo.duckdns.org.crt"
 
 
 build-job:       # This job runs in the build stage, which runs first.
