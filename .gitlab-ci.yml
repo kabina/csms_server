@@ -31,7 +31,7 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo "Build the code..."
-      docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
+    - docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
       #- docker build -t $DOCKER_IMAGE_NAME https://gitlab-ci-token:$CI_JOB_TOKEN@nheo.duckdns.org:8443/charger/csms_server.git
       #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
     - echo "Build docker complete."
