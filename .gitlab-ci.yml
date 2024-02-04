@@ -20,6 +20,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build
   - test
   - deploy
+  - docker-deploy
 
 variables:
   DOCKER_IMAGE_NAME: "csms-server"
@@ -60,7 +61,7 @@ deploy-job:      # This job runs in the deploy stage.
     - echo "deploy complete ..."
 
 deploy-job-docker:      # This job runs in the deploy stage.
-  stage: deploy
+  stage: docker-deploy
   script:
     #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
     - echo "Docker deploy Start ..."
