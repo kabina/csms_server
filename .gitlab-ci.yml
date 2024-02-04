@@ -31,7 +31,7 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
     - echo "Build the code..."
-      #- docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
+      docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
       #- docker build -t $DOCKER_IMAGE_NAME https://gitlab-ci-token:$CI_JOB_TOKEN@nheo.duckdns.org:8443/charger/csms_server.git
       #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
     - echo "Build docker complete."
@@ -62,7 +62,7 @@ deploy-job:      # This job runs in the deploy stage.
 deploy-job-docker:      # This job runs in the deploy stage.
   stage: deploy
   script:
-    - docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
+    #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
     - echo "Docker deploy Start ..."
     - if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker stop $DOCKER_IMAGE_NAME; fi
     # 중지된 컨테이너가 있다면 삭제
