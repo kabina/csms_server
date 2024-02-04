@@ -54,8 +54,8 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy
   script:
     - echo "deploy Start ..."
-    - mkdir -p /var/gitlab-runner/csms-server  # 대상 디렉토리 생성
-    - rsync -av --exclude='.git/' $CI_PROJECT_DIR/ /var/gitlab-runner/csms-server/  # 파일을 목적지 디렉토리로 복사
+      #- mkdir -p /var/gitlab-runner/csms-server  # 대상 디렉토리 생성
+      #- rsync -av --exclude='.git/' $CI_PROJECT_DIR/ /var/gitlab-runner/csms-server/  # 파일을 목적지 디렉토리로 복사
 
     - echo "deploy complete ..."
 
