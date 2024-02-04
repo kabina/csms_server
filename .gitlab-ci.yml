@@ -28,7 +28,7 @@ variables:
 
 before_script:
     - apt update -y
-    - apt install -y docker.io
+      #- apt install -y docker.io
     - apt install -y rsync
 
 build-job:       # This job runs in the build stage, which runs first.
