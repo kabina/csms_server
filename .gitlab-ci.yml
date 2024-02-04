@@ -22,13 +22,18 @@ stages:          # List of stages for jobs, and their order of execution
   - deploy
 
 variables:
+  - DOCKER_IMAGE_NAME: "csms-server"
+  - DOCKER_IMAGE_TAG: "latest"
 
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
-    - echo "Compiling the code..."
-    - echo "Compile complete."
+    - echo "Build the code..."
+    - chmod +x generate_requirements.sh
+    - $CI_PROJECT_DIR/generate_requirements.sh
+    - docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR/src
+    - echo "Build docker complete."
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
@@ -47,13 +52,17 @@ lint-test-job:   # This job also runs in the test stage.
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
   script:
-
+    - echo "Docker deploy Start ..."
     - mkdir -p /var/gitlab-runner/csms-server  # 대상 디렉토리 생성
     - rsync -av --exclude='.git/' $CI_PROJECT_DIR/ /var/gitlab-runner/csms-server/  # 파일을 목적지 디렉토리로 복사
-    - echo "Service stopping ..."
-    - sh /var/gitlab-runner/prd/csms-server/stop_gunicorn.sh
-    - echo "Service starting ..."
-    - sh /var/gitlab-runner/prd/csms-server/runapp.sh
+
+    - if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker stop $DOCKER_IMAGE_NAME; fi
+    # 중지된 컨테이너가 있다면 삭제
+    - if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker rm $DOCKER_IMAGE_NAME; fi
+    # 새로운 이미지로 컨테이너 실행
+    - docker run -d -p 5000:5000 --name $DOCKER_IMAGE_NAME $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - echo "Docker deploy complete ..."
+
   rules:
     - changes:
         - "src/**/*"
