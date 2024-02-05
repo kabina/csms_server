@@ -83,9 +83,9 @@ deploy-job:      # This job runs in the deploy stage.
     - if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker rm $DOCKER_IMAGE_NAME; fi
     # 새로운 이미지로 컨테이너 실행
     - echo "Pushing Docker image to local registry..."
-    - docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+      #- docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
       #- docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME ev_rest:app
+    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME
     - echo "Docker deploy complete ..."
 
   rules:
