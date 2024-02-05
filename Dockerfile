@@ -28,7 +28,6 @@ EXPOSE 5000
 
 # Define environment variable
 ENV NAME World
-RUN cd app
 
 #RUN chmod +x /app/runapp.sh
 #CMD ["runapp.sh"]
