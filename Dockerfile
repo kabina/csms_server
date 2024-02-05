@@ -12,9 +12,9 @@ COPY ./src /app
 USER appuser
 
 # Create and activate a virtual environment
-RUN python -m venv venv
-ENV PATH="/app/venv/bin:$PATH"
-RUN /app/venv/bin/python -m pip install --upgrade pip
+RUN python -m venv /home/appuser/venv
+ENV PATH="/home/appuser/venv/bin:$PATH"
+RUN /home/appuser/venv/bin/python -m pip install --upgrade pip
 
 # Install gunicorn
 RUN pip install gunicorn
