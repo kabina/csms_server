@@ -28,7 +28,7 @@ EXPOSE 5000
 
 # Define environment variable
 ENV NAME World
-RUN ls /app
+RUN ls -l /app
 
 RUN chmod +x /app/runapp.sh
 CMD ["/app/runapp.sh"]
