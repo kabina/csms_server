@@ -74,10 +74,6 @@ deploy-job:      # This job runs in the deploy stage.
     - name: docker:20-dind
       alias: docker
       command: ["--tls=false"]
-  before_script:
-    #- addgroup -g 999 docker
-    #- usermod -aG docker $CI_RUNNER_USER
-    - adduser $CI_RUNNER_USER docker
   script:
     #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
     - echo "Docker deploy Start ..."
