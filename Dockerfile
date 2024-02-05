@@ -32,4 +32,4 @@ ENV NAME World
 #RUN chmod +x /app/runapp.sh
 #CMD ["runapp.sh"]
 # Run app.py when the container launches
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "--chdir", "/app", ev_rest:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "--chdir", "/app", "ev_rest:app"]
