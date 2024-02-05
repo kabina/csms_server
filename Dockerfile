@@ -28,8 +28,9 @@ EXPOSE 5000
 
 # Define environment variable
 ENV NAME World
+RUN ls /app
 
 RUN chmod +x /app/runapp.sh
-CMD /app/runapp.sh
+CMD ["/app/runapp.sh"]
 # Run app.py when the container launches
 #CMD ["gunicorn", "-b", "0.0.0.0:5000", "--chdir", "/app", ev_rest:app"]
