@@ -2,6 +2,7 @@
 FROM python:3.10
 
 RUN useradd -ms /bin/bash 'appuser'
+USER appuser
 
 # Set the working directory to /app
 WORKDIR /app
@@ -9,7 +10,6 @@ WORKDIR /app
 # Copy the rest of the application code
 COPY ./src /app
 
-USER appuser
 
 # Create and activate a virtual environment
 RUN python -m venv /home/appuser/venv
