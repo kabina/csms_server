@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from confluent_kafka import Consumer, Producer
 from csms_backend import retr_charger_list
 
-# chmod test erase appuser test test 8
+# chmod test erase appuser test test 9
 app = Flask(__name__)
 app.config['API_KEY'] = os.environ.get('API_KEY')
 

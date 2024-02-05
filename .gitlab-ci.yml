@@ -85,7 +85,7 @@ deploy-job:      # This job runs in the deploy stage.
     - echo "Pushing Docker image to local registry..."
     - docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
       #- docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:latest
+    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME ev_rest:app
     - echo "Docker deploy complete ..."
 
   rules:
