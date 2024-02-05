@@ -75,7 +75,7 @@ deploy-job:      # This job runs in the deploy stage.
       alias: docker
       command: ["--tls=false"]
   before_script:
-    - addgroup -g 999 docker
+    #- addgroup -g 999 docker
     - usermod -aG docker $CI_RUNNER_USER
   script:
     #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
