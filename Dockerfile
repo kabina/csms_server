@@ -1,8 +1,8 @@
 # Use an official Python runtime as a parent image
 FROM python:3.10
 
-RUN useradd -ms /bin/bash 'appuser'
-USER appuser
+#RUN useradd -ms /bin/bash 'appuser'
+#USER appuser
 
 # Set the working directory to /app
 WORKDIR /app
@@ -12,9 +12,9 @@ COPY ./src /app
 
 
 # Create and activate a virtual environment
-RUN python -m venv /home/appuser/venv
-ENV PATH="/home/appuser/venv/bin:$PATH"
-RUN /home/appuser/venv/bin/python -m pip install --upgrade pip
+RUN python -m venv /app/venv
+ENV PATH="/app/venv/bin:$PATH"
+RUN /app/venv/bin/python -m pip install --upgrade pip
 
 # Install gunicorn
 RUN pip install gunicorn
