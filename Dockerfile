@@ -39,4 +39,4 @@ EXPOSE 8765
 #CMD ["gunicorn", "-b", "0.0.0.0:5000", "--chdir", "/app", "ev_rest:app"]
 #CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 --chdir /app ev_rest:app & python /app/csms_server.py"]
 #CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 --chdir /app ev_rest:app && python /app/csms_server.py"]
-CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 --chdir /app ev_rest:app"]
+CMD ["gunicorn -b 0.0.0.0:5000 --chdir /app ev_rest:app"]
