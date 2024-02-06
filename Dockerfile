@@ -31,7 +31,7 @@ ENV NAME World
 
 RUN pip install websockets
 
-EXPOSE 5000
+EXPOSE 8765
 
 #RUN chmod +x /app/runapp.sh
 #CMD ["runapp.sh"]
