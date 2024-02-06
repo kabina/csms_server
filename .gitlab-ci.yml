@@ -55,7 +55,7 @@ lint-test-job:   # This job also runs in the test stage.
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
-  image: docker:20.10
+  image: docker
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
@@ -63,7 +63,7 @@ deploy-job:      # This job runs in the deploy stage.
     DOCKER_IMAGE_NAME: "csms-server"
     DOCKER_IMAGE_TAG: "latest"
   services:
-    - name: docker:20.10-dind
+    - name: docker:dind
       alias: docker
       command: ["--tls=false"]
   script:
