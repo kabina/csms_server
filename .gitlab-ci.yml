@@ -60,8 +60,8 @@ deploy-job:      # This job runs in the deploy stage.
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_USERNAME: $CI_REGISTRY_USER  # GitLab Docker 레지스트리 사용자 이름
-    DOCKER_PASSWORD: $CI_REGISTRY_PASSWORD
+    DOCKER_USERNAME: "kabina"  # GitLab Docker 레지스트리 사용자 이름
+    DOCKER_PASSWORD: "ah64jj3!"
     DOCKER_IMAGE_NAME: "kabina/csms-server"
     DOCKER_IMAGE_TAG: "latest"
   services:
