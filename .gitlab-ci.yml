@@ -86,6 +86,7 @@ deploy-job:      # This job runs in the deploy stage.
     - docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker images
+    - sleep 10
     - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     #- docker run -d -p 8765:8765 csms-server-websocket
     - docker ps -a
