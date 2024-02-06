@@ -60,6 +60,8 @@ deploy-job:      # This job runs in the deploy stage.
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
+    DOCKER_USERNAME: $CI_REGISTRY_USER  # GitLab Docker 레지스트리 사용자 이름
+    DOCKER_PASSWORD: $CI_REGISTRY_PASSWORD
     DOCKER_IMAGE_NAME: "csms-server"
     DOCKER_IMAGE_TAG: "latest"
   services:
@@ -69,6 +71,7 @@ deploy-job:      # This job runs in the deploy stage.
   script:
     - echo "Docker deploy Start ..."
     - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile_gunicorn .
+    - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     #- docker build -t csms-server-websocket -f Dockerfile_websocket .
     # 실행 중인 컨테이너가 있다면 삭제
     #- if docker ps | grep $DOCKER_IMAGE_NAME; then docker stop $DOCKER_IMAGE_NAME; fi
@@ -79,8 +82,8 @@ deploy-job:      # This job runs in the deploy stage.
     #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
 
     # 새로운 이미지로 컨테이너 실행
-    #- docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    #- docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker images
     - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     #- docker run -d -p 8765:8765 csms-server-websocket
