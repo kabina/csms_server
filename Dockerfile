@@ -29,7 +29,12 @@ EXPOSE 5000
 # Define environment variable
 ENV NAME World
 
+RUN pip install websockets
+
+EXPOSE 5000
+
 #RUN chmod +x /app/runapp.sh
 #CMD ["runapp.sh"]
 # Run app.py when the container launches
-CMD ["gunicorn", "-b", "0.0.0.0:5000", "--chdir", "/app", "ev_rest:app"]
+#CMD ["gunicorn", "-b", "0.0.0.0:5000", "--chdir", "/app", "ev_rest:app"]
+CMD ["bash", "-c", "gunicorn -b 0.0.0.0:5000 --chdir /app ev_rest:app & python /app/csms_server.py"]
