@@ -22,6 +22,7 @@ RUN pip install flask
 RUN pip install confluent_kafka
 RUN pip install ocpp
 RUN pip install psycopg2
+RUN apt install -y git
 
 # Make port 5000 available to the world outside this container
 EXPOSE 5000
