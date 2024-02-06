@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "# append date `date`\n" >> src/app.py
+git commit -am "`date`"
+git push
