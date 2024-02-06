@@ -30,7 +30,7 @@ EXPOSE 5000
 ENV NAME World
 
 #RUN chmod +x /app/runapp.sh
-RUN cd src
+RUN cd /app
 CMD ["sh", "-c", "./runapp.sh"]
 # Run app.py when the container launches
 #CMD ["gunicorn", "-b", "0.0.0.0:5000", "--chdir", "/app", "ev_rest:app"]
