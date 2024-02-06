@@ -57,6 +57,7 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy
   image: docker:20.10
   variables:
+    DOCKER_HOST: tcp://localhost:2375
     DOCKER_IMAGE_NAME: "csms-server"
     DOCKER_IMAGE_TAG: "latest"
   script:
