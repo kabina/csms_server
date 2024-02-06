@@ -55,17 +55,34 @@ lint-test-job:   # This job also runs in the test stage.
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
-  image: docker:20.10
+  image: docker:20
   variables:
-    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
     DOCKER_IMAGE_NAME: "csms-server"
     DOCKER_IMAGE_TAG: "latest"
+  services:
+    - name: docker:20-dind
+      alias: docker
+      command: ["--tls=false"]
   script:
     - echo "Docker deploy Start ..."
     - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile_gunicorn .
-    - docker stop $DOCKER_IMAGE_NAME || true
-    - docker rm $DOCKER_IMAGE_NAME || true
-    - docker run -d -p 5000:5000 --name $DOCKER_IMAGE_NAME $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    #- docker build -t csms-server-websocket -f Dockerfile_websocket .
+    # 실행 중인 컨테이너가 있다면 삭제
+    #- if docker ps | grep $DOCKER_IMAGE_NAME; then docker stop $DOCKER_IMAGE_NAME; fi
+    # 중지된 컨테이너가 있다면 삭제
+    #- if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker rm $DOCKER_IMAGE_NAME; fi
+
+    #- docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
+    #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
+
+    # 새로운 이미지로 컨테이너 실행
+    #- docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    #- docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    #- docker run -d -p 8765:8765 csms-server-websocket
     - echo "Docker deploy complete ..."
 
   rules:
