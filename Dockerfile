@@ -12,9 +12,9 @@ COPY ./src /app
 
 
 # Create and activate a virtual environment
-RUN python -m venv /app/venv
-ENV PATH="/app/venv/bin:$PATH"
-RUN /app/venv/bin/python -m pip install --upgrade pip
+#RUN python -m venv /app/venv
+#ENV PATH="/app/venv/bin:$PATH"
+RUN pip install --upgrade pip
 
 # Install gunicorn
 RUN pip install gunicorn
@@ -37,4 +37,5 @@ EXPOSE 8765
 #CMD ["runapp.sh"]
 # Run app.py when the container launches
 #CMD ["gunicorn", "-b", "0.0.0.0:5000", "--chdir", "/app", "ev_rest:app"]
-CMD ["bash", "-c", "gunicorn -b 0.0.0.0:5000 --chdir /app ev_rest:app & python /app/csms_server.py"]
+#CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 --chdir /app ev_rest:app & python /app/csms_server.py"]
+CMD ["sh", "-c", "gunicorn -b 0.0.0.0:5000 --chdir /app ev_rest:app && python /app/csms_server.py"]
