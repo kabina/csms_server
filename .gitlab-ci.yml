@@ -97,7 +97,9 @@ deploy-job:      # This job runs in the deploy stage.
     - docker ps -a
     - docker images
     - echo "Docker deploy complete ..."
-    - sleep 100
+  after_script:
+    - docker pull kabina/csms-server:latest
+    - docker run -d kabina/csms-server/latest
 
   rules:
     - changes:
