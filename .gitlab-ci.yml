@@ -69,6 +69,8 @@ deploy-job:      # This job runs in the deploy stage.
       alias: docker
       command: ["--tls=false"]
   script:
+    - echo $DOCKER_USERNAME
+    - echo $DOCKER_PASSWORD
     - echo "Docker deploy Start ..."
     - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
     - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile_gunicorn .
