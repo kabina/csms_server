@@ -21,6 +21,13 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - deploy
 
+variables:
+  DEPLOY_DIR: /var/gitlab-runner/prd/csms-server
+  PREVIOUS_COMMIT: $CI_COMMIT_BEFORE_SHA
+
+before_script:
+  - mkdir -p $DEPLOY_DIR
+
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   script:
