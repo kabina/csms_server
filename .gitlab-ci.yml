@@ -1,115 +1,89 @@
-# This file is a template, and might need editing before it works on your project.
-# This is a sample GitLab CI/CD configuration file that should run without any modifications.
-# It demonstrates a basic 3 stage CI/CD pipeline. Instead of real tests or scripts,
-# it uses echo commands to simulate the pipeline execution.
-#
-# A pipeline is composed of independent jobs that run scripts, grouped into stages.
-# Stages run in sequential order, but jobs within stages run in parallel.
-#
-# For more information, see: https://docs.gitlab.com/ee/ci/yaml/index.html#stages
-#
-# You can copy and paste this template into a new `.gitlab-ci.yml` file.
-# You should not add this template to an existing `.gitlab-ci.yml` file by using the `include:` keyword.
-#
-# To contribute improvements to CI/CD templates, please follow the Development guide at:
-# https://docs.gitlab.com/ee/development/cicd/templates.html
-# This specific template is located at:
-# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Getting-Started.gitlab-ci.yml
-
-stages:          # List of stages for jobs, and their order of execution
-  - build
-  - test
-  - deploy
-
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
+stages:
+- build
+- test
+- deploy
+- review
+- dast
+- staging
+- canary
+- production
+- incremental rollout 10%
+- incremental rollout 25%
+- incremental rollout 50%
+- incremental rollout 100%
+- performance
+- cleanup
 variables:
-  DEPLOY_DIR: /var/gitlab-runner/prd/csms-server
-  PREVIOUS_COMMIT: $CI_COMMIT_BEFORE_SHA
-
+  DEPLOY_DIR: "/var/gitlab-runner/prd/csms-server"
+  PREVIOUS_COMMIT: "$CI_COMMIT_BEFORE_SHA"
 before_script:
-  - mkdir -p $DEPLOY_DIR
-
-build-job:       # This job runs in the build stage, which runs first.
+- mkdir -p $DEPLOY_DIR
+build-job:
   stage: build
   script:
-    - echo "Build the code..."
-      #- docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
-      #- docker build -t $DOCKER_IMAGE_NAME https://gitlab-ci-token:$CI_JOB_TOKEN@nheo.duckdns.org:8443/charger/csms_server.git
-      #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
-    - echo "Build docker complete."
-
-unit-test-job:   # This job runs in the test stage.
-  stage: test    # It only starts when the job in the build stage completes successfully.
+  - echo "Build the code..."
+  - echo "Build docker complete."
+unit-test-job:
+  stage: test
   script:
-    - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 5
-    - echo "Code coverage is 90%"
-
-lint-test-job:   # This job also runs in the test stage.
-  stage: test    # It can run at the same time as unit-test-job (in parallel).
+  - echo "Running unit tests... This will take about 60 seconds."
+  - sleep 5
+  - echo "Code coverage is 90%"
+lint-test-job:
+  stage: test
   script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 5
-    - echo "No lint issues found."
-
-      #deploy-job-docker:      # This job runs in the deploy stage.
-      #stage: docker-deploy
-      #script:
-      #- echo "deploy Start ..."
-      #- mkdir -p /var/gitlab-runner/csms-server  # 대상 디렉토리 생성
-      #- rsync -av --exclude='.git/' $CI_PROJECT_DIR/ /var/gitlab-runner/csms-server/  # 파일을 목적지 디렉토리로 복사
-
-      #- echo "deploy complete ..."
-
-deploy-job:      # This job runs in the deploy stage.
+  - echo "Linting code... This will take about 10 seconds."
+  - sleep 5
+  - echo "No lint issues found."
+deploy-job:
   stage: deploy
   image: docker
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_USERNAME: $CI_DOCKER_USER  # GitLab Docker 레지스트리 사용자 이름
-    DOCKER_PASSWORD: $CI_DOCKER_PASSWORD
-    DOCKER_IMAGE_NAME: "kabina/csms-server"
-    DOCKER_IMAGE_TAG: "latest"
+    DOCKER_TLS_CERTDIR: ''
+    DOCKER_USERNAME: "$CI_DOCKER_USER"
+    DOCKER_PASSWORD: "$CI_DOCKER_PASSWORD"
+    DOCKER_IMAGE_NAME: kabina/csms-server
+    DOCKER_IMAGE_TAG: latest
   services:
-    - name: docker:dind
-      alias: docker
-      command: ["--tls=false"]
+  - name: docker:dind
+    alias: docker
+    command:
+    - "--tls=false"
   script:
-    - echo $CI_DOCKER_USER
-    - echo $CI_DOCKER_PASSWORD
-    - echo "Docker deploy Start ..."
-
-    - docker login -u $CI_DOCKER_USER -p $CI_DOCKER_PASSWORD
-    - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile_gunicorn .
-    #- docker build -t csms-server-websocket -f Dockerfile_websocket .
-    # 실행 중인 컨테이너가 있다면 삭제
-    #- if docker ps | grep $DOCKER_IMAGE_NAME; then docker stop $DOCKER_IMAGE_NAME; fi
-    # 중지된 컨테이너가 있다면 삭제
-    #- if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker rm $DOCKER_IMAGE_NAME; fi
-
-    #- docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
-    #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
-
-    # 새로운 이미지로 컨테이너 실행
-    - docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    - docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    - docker images
-    - sleep 10
-    - echo $DOCKER_IMAGE_NAME $DOCKER_IMAGE_TAG
-    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    #- docker run -d -p 8765:8765 csms-server-websocket
-    - docker ps
-    - sleep 10
-    - docker ps -a
-    - docker images
-    - echo "Docker deploy complete ..."
+  - echo $CI_DOCKER_USER
+  - echo $CI_DOCKER_PASSWORD
+  - echo "Docker deploy Start ..."
+  - docker login -u $CI_DOCKER_USER -p $CI_DOCKER_PASSWORD
+  - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile_gunicorn .
+  - docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+  - docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+  - docker images
+  - sleep 10
+  - echo $DOCKER_IMAGE_NAME $DOCKER_IMAGE_TAG
+  - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+  - docker ps
+  - sleep 10
+  - docker ps -a
+  - docker images
+  - echo "Docker deploy complete ..."
   after_script:
-    - docker login -u $CI_DOCKER_USER -p $CI_DOCKER_PASSWORD
-    - docker pull kabina/csms-server:latest
-    - docker run -d kabina/csms-server:latest
-
+  - docker login -u $CI_DOCKER_USER -p $CI_DOCKER_PASSWORD
+  - docker pull kabina/csms-server:latest
+  - docker run -d kabina/csms-server:latest
   rules:
-    - changes:
-        - "src/**/*"
-      when: always
+  - changes:
+    - src/**/*
+    when: always
+sast:
+  stage: test
+include:
+- template: Auto-DevOps.gitlab-ci.yml
