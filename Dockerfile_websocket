@@ -31,4 +31,4 @@ EXPOSE 8765
 #RUN chmod +x /app/runapp.sh
 #CMD ["runapp.sh"]
 # Run app.py when the container launches
-CMD ["python", "/app/csms_server.py"]
+CMD ["python", "csms_server.py"]
