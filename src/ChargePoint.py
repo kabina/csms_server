@@ -28,6 +28,7 @@ class ChargePoint(cp):
             status=RegistrationStatus.accepted,
         )
 
+
     # async def send_get_configuration(self):
     #     request = call.GetConfigurationPayload(
     #         key=["AuthorizationRemoteTxRequests"]
