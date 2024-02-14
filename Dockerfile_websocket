@@ -25,9 +25,11 @@ RUN pip install websockets
 RUN pip install aiokafka
 
 # Make port 5000 available to the world outside this container
-# Define environment variable
-
 EXPOSE 8765
+
+# Define environment variable
+ENV NAME World
+
 
 #RUN chmod +x /app/runapp.sh
 #CMD ["runapp.sh"]
