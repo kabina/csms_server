@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from confluent_kafka import Consumer, Producer
 from csms_backend import retr_charger_list
 
-# TEST 
+# TESTTEST
 app = Flask(__name__)
 app.config['API_KEY'] = os.environ.get('API_KEY')
 
@@ -29,14 +29,14 @@ def require_api_key(view_function):
         api_key = request.headers.get('X-API-Key')
         if api_key and api_key == app.config['API_KEY']:
             return view_function(*args, **kwargs)
-        else:
-            return jsonify({'error': 'Unauthorized'}), 401
+        return jsonify({'error': 'Unauthorized'}), 401
 
     return decorated_function
 
 @app.route('/api/get_charger_list', methods=['POST'])
 @require_api_key
 def get_charger_list():
+    """get_charger_list."""
     try:
         # POST 요청에서 데이터 추출
         data = request.get_json()
@@ -144,3 +144,4 @@ if __name__ == '__main__':
 # deploy commit name : commit of 2024. 02. 07. (수) 17:34:46 KST\n
 # deploy commit name : commit of 2024. 02. 07. (수) 17:38:20 KST\n
 # deploy commit name : commit of 2024. 02. 07. (수) 17:41:36 KST\n
+# deploy commit name : commit of 2024. 02. 14. (수) 14:41:52 KST\n
