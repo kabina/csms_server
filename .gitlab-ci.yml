@@ -57,7 +57,8 @@ deploy-job:      # This job runs in the deploy stage.
   stage: deploy
   image: docker
   variables:
-    DOCKER_HOST: tcp://docker:2375
+    #DOCKER_HOST: tcp://docker:2375
+    DOCKER_HOST: unix:///var/run/docker.sock
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
     DOCKER_USERNAME: $CI_DOCKER_USER  # GitLab Docker 레지스트리 사용자 이름
@@ -75,16 +76,6 @@ deploy-job:      # This job runs in the deploy stage.
 
     - docker login -u $CI_DOCKER_USER -p $CI_DOCKER_PASSWORD
     - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile_gunicorn .
-    #- docker build -t csms-server-websocket -f Dockerfile_websocket .
-    # 실행 중인 컨테이너가 있다면 삭제
-    #- if docker ps | grep $DOCKER_IMAGE_NAME; then docker stop $DOCKER_IMAGE_NAME; fi
-    # 중지된 컨테이너가 있다면 삭제
-    #- if docker ps -a | grep $DOCKER_IMAGE_NAME; then docker rm $DOCKER_IMAGE_NAME; fi
-
-    #- docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
-    #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
-
-    # 새로운 이미지로 컨테이너 실행
     - docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker images
