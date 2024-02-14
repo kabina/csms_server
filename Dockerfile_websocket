@@ -14,7 +14,7 @@ WORKDIR /app
 
 # Create and activate a virtual environment
 #RUN python -m venv /app/venv
-#ENV PATH="/app/venv/bin:$PATH"
+ENV PATH="/app:$PATH"
 RUN pip install --upgrade pip
 
 # Install gunicorn
