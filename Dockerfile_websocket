@@ -31,7 +31,7 @@ EXPOSE 8765
 ENV NAME World
 
 
-#RUN chmod +x /app/runapp.sh
+RUN chmod +x /app/runsock.sh
 #CMD ["runapp.sh"]
 # Run app.py when the container launches
 CMD ["runsock.sh"]
