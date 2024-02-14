@@ -80,7 +80,7 @@ deploy-job:      # This job runs in the deploy stage.
     - docker images
     - sleep 10
     - echo $DOCKER_IMAGE_NAME $DOCKER_IMAGE_TAG
-    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+      #- docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     #- docker run -d -p 8765:8765 csms-server-websocket
     - docker ps
     - sleep 10
@@ -90,7 +90,7 @@ deploy-job:      # This job runs in the deploy stage.
   after_script:
     - docker login -u $CI_DOCKER_USER -p $CI_DOCKER_PASSWORD
     - docker pull kabina/csms-server:latest
-    - docker run -d kabina/csms-server:latest
+    - docker run -d -p 5000:5000 kabina/csms-server:latest
 
   rules:
     - changes:
