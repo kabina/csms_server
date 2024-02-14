@@ -26,12 +26,17 @@ build-job:       # This job runs in the build stage, which runs first.
   script:
     - echo "Compiling the code..."
     - echo "Compile complete."
+    - echo "Build the code..."
+      #- docker build -t $DOCKER_IMAGE_NAME $CI_PROJECT_DIR
+      #- docker build -t $DOCKER_IMAGE_NAME https://gitlab-ci-token:$CI_JOB_TOKEN@nheo.duckdns.org:8443/charger/csms_server.git
+      #- docker build -t $DOCKER_IMAGE_NAME /var/gitlab-runner/prd/csms-server
+    - echo "Build docker complete."
 
 unit-test-job:   # This job runs in the test stage.
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
     - echo "Running unit tests... This will take about 60 seconds."
-    - sleep 60
+    - sleep 5
     - echo "Code coverage is 90%"
 
 lint-test-job:   # This job also runs in the test stage.
@@ -43,11 +48,51 @@ lint-test-job:   # This job also runs in the test stage.
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
-  only:
-    - master  # 브랜치 설정 (필요에 따라 변경)
+  image: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_USERNAME: $CI_DOCKER_USER  # GitLab Docker 레지스트리 사용자 이름
+    DOCKER_PASSWORD: $CI_DOCKER_PASSWORD
+    DOCKER_IMAGE_NAME: "kabina/csms-server"
+    DOCKER_SOCKET_IMAGE_NAME: "kabina/socket-server"
+    DOCKER_IMAGE_TAG: "latest"
+  services:
+    - name: docker:dind
+      alias: docker
+      command: ["--tls=false"]
   script:
-    - mkdir -p /home/kabina/prd/csms-server  # 대상 디렉토리 생성
-    - rsync -av --exclude='.git/' $CI_PROJECT_DIR/ /home/kabina/prd/csms-server/  # 파일을 목적지 디렉토리로 복사
-  rules:  # 'only' 대신에 'rules' 키워드 사용 (변경 감지를 통해 실행 여부 결정)
+    - echo $CI_DOCKER_USER
+    - echo $CI_DOCKER_PASSWORD
+    - echo "Docker deploy Start ..."
+
+    - docker login -u $CI_DOCKER_USER -p $CI_DOCKER_PASSWORD
+    - docker build -t $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile_gunicorn .
+    - docker build -t $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG -f Dockerfile_websocket .
+    - docker tag $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker tag $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker push $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker images
+    - sleep 10
+    - echo $DOCKER_IMAGE_NAME $DOCKER_IMAGE_TAG
+      #- docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    #- docker run -d -p 8765:8765 csms-server-websocket
+    - docker ps
+    - sleep 10
+    - docker ps -a
+    - docker images
+    - echo "Docker deploy complete ..."
+  after_script:
+    - docker login -u $CI_DOCKER_USER -p $CI_DOCKER_PASSWORD
+    - docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker pull $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker run -d -p 8765:8765 $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
+
+  rules:
     - changes:
-        - '*/*'  # 변경 감지를 통해 실행 여부 결정 (필요에 따라 변경)
+        - "src/**/*"
+      when: always
+
