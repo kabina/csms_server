@@ -48,11 +48,12 @@ deploy-job:
   variables:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ''
-    DOCKER_USERNAME: "$CI_DOCKER_USER"
-    DOCKER_PASSWORD: "$CI_DOCKER_PASSWORD"
-    DOCKER_IMAGE_NAME: kabina/csms-server
-    DOCKER_IMAGE_TAG: latest
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_USERNAME: $CI_DOCKER_USER  # GitLab Docker 레지스트리 사용자 이름
+    DOCKER_PASSWORD: $CI_DOCKER_PASSWORD
+    DOCKER_IMAGE_NAME: "kabina/csms-server"
+    DOCKER_SOCKET_IMAGE_NAME: "kabina/socket-server"
+    DOCKER_IMAGE_TAG: "latest"
   services:
   - name: docker:dind
     alias: docker
