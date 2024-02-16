@@ -21,7 +21,7 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - security_test
   - deploy
-  - jab_scan
+  - zap_scan
 
 variables:
   ZAP_CONTAINER_NAME: "zap"
