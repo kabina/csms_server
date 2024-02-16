@@ -58,7 +58,8 @@ security_test-job:
     - echo "Running security tests with Bandit..."
     - bandit -r src/
   allow_failure: true
-
+  dependencies:
+    - security_test
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
   image: docker
