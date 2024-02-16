@@ -59,7 +59,8 @@ security_test-job:
     - bandit -r src/
   allow_failure: true
   dependencies:
-    - security_test
+    - security_test-job
+    -
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
   image: docker
