@@ -4,7 +4,6 @@ from flask import Flask, request, jsonify
 from confluent_kafka import Consumer, Producer
 from csms_backend import retr_charger_list
 
-# TEST 
 app = Flask(__name__)
 app.config['API_KEY'] = os.environ.get('API_KEY')
 
@@ -96,51 +95,9 @@ def gen_api_key():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
-
-# append date 2024. 02. 06. (화) 11:06:10 KST\n
-# append date 2024. 02. 06. (화) 11:06:45 KST\n
-# append date 2024. 02. 06. (화) 11:08:52 KST\n
-# append date 2024. 02. 06. (화) 12:32:10 KST\n
-# append date 2024. 02. 06. (화) 12:46:27 KST\n
-# append date 2024. 02. 06. (화) 12:56:23 KST\n
-# append date 2024. 02. 06. (화) 13:02:38 KST\n
-# append date 2024. 02. 06. (화) 13:08:40 KST\n
-# append date 2024. 02. 06. (화) 13:18:24 KST\n
-# append date 2024. 02. 06. (화) 13:26:49 KST\n
-# append date 2024. 02. 06. (화) 13:33:30 KST\n
-# append date 2024. 02. 06. (화) 13:44:59 KST\n
-# append date 2024. 02. 06. (화) 13:52:05 KST\n
-# append date 2024. 02. 06. (화) 14:05:33 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 14:21:33 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 14:53:49 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 16:20:28 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 16:58:47 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 17:06:26 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 17:17:07 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 17:20:32 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 17:34:48 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 17:44:21 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 17:50:53 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 20:59:09 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 21:07:01 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 21:11:56 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 21:17:00 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 21:27:37 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 21:30:38 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 21:46:03 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 21:52:37 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 22:04:53 KST\n
-# deploy commit name : commit of 2024. 02. 06. (화) 22:20:01 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 10:26:27 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 10:32:39 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 10:41:45 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 10:45:13 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 10:50:19 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 11:05:02 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 12:15:34 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 12:18:51 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 12:19:47 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 13:00:59 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 17:34:46 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 17:38:20 KST\n
-# deploy commit name : commit of 2024. 02. 07. (수) 17:41:36 KST\n
+# deploy commit name : commit of 2024. 02. 14. (수) 18:15:10 KST\n
+# deploy commit name : commit of 2024. 02. 15. (목) 09:46:38 KST\n
+# deploy commit name : commit of 2024. 02. 16. (금) 09:18:22 KST\n
+# deploy commit name : commit of 2024. 02. 16. (금) 09:20:15 KST\n
+# deploy commit name : commit of 2024. 02. 16. (금) 09:42:21 KST\n
+# deploy commit name : commit of 2024. 02. 16. (금) 09:42:26 KST\n
