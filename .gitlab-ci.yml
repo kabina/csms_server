@@ -21,7 +21,7 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - security_test
   - deploy
-  -
+
 variables:
   ZAP_CONTAINER_NAME: "zap"
   ZAP_BASE_URL: "http://nheo.duckdns.org:8765"
