@@ -50,6 +50,9 @@ lint-test-job:   # This job also runs in the test stage.
 security_test-job:
   stage: security_test
   before_script:
+    - apt-get update  # 패키지 목록을 업데이트
+    - apt-get install -y python3-pip  # pip를 포함한 Python3를 설치
+    - ln -s /usr/bin/python3 /usr/bin/python
     - pip install bandit
   script:
     - echo "Running security tests with Bandit..."
