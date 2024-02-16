@@ -63,8 +63,6 @@ security_test-job:
   script:
     - echo "Running security tests with Bandit..."
     - bandit -r src/
-  dependencies:
-    - security_test-job
 
 zap_scan-job:
   stage: security_test
