@@ -19,6 +19,7 @@
 stages:          # List of stages for jobs, and their order of execution
   - build
   - test
+  - secruity_test
   - deploy
 
 build-job:       # This job runs in the build stage, which runs first.
@@ -45,6 +46,13 @@ lint-test-job:   # This job also runs in the test stage.
     - echo "Linting code... This will take about 10 seconds."
     - sleep 10
     - echo "No lint issues found."
+
+security_test-job:
+  stage: security_test
+  script:
+    - echo "Running security tests with Bandit..."
+    - bandit -r src/
+  allow_failure: true
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
