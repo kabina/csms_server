@@ -73,7 +73,7 @@ zap_scan-job:
   script:
     - pwd
     - ls
-    - zap-full-scan.py -t "http://example.com" -m 1 -d -I -r testreport.html
+    - zap-full-scan.py -t "http://nheo.duckdns.org:8765" -m 1 -d -I -r testreport.html
     - cp /zap/wrk/testreport.html testreport.html
   artifacts:
     when: always
