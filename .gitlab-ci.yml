@@ -66,7 +66,8 @@ security_test-job:
 
 zap_scan-job:
   stage: security_test
-  image: owasp/zap2docker-stable
+  #image: owasp/zap2docker-stable
+  image: docker
   script:
     - docker pull owasp/zap2docker-stable
     - docker run -t --name $ZAP_CONTAINER_NAME owasp/zap2docker-stable zap-baseline.py -t $ZAP_BASE_URL
