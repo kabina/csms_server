@@ -66,18 +66,19 @@ security_test-job:
 
 zap_scan-job:
   stage: security_test
-  #image: owasp/zap2docker-stable
-  image: docker:dind
-#  variables:
-#    DOCKER_HOST: tcp://docker:2375
-#    DOCKER_DRIVER: overlay2
-#    DOCKER_TLS_CERTDIR: ""
-#    DOCKER_USERNAME: $CI_DOCKER_USER  # GitLab Docker 레지스트리 사용자 이름
-#    DOCKER_PASSWORD: $CI_DOCKER_PASSWORD
+  image:
+    name: owasp/zap2docker-weekly
+  before_script:
+    - mkdir -p /zap/wrk
   script:
-    - docker pull owasp/zap2docker-stable
-    - docker run -t --name $ZAP_CONTAINER_NAME owasp/zap2docker-stable zap-baseline.py -t $ZAP_BASE_URL
-    # OWASP ZAP 스캔을 실행하는 명령어 추가
+    - pwd
+    - ls
+    - zap-full-scan.py -t "http://example.com" -m 1 -d -I -r testreport.html
+    - cp /zap/wrk/testreport.html testreport.html
+  artifacts:
+    when: always
+    paths:
+      - testreport.html
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
