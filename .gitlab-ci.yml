@@ -66,8 +66,8 @@ security_test-job:
 
 zap_scan-job:
   stage: security_test
-  image: owasp/zap2docker-stable
-  #image: docker
+  #image: owasp/zap2docker-stable
+  image: docker:dind
 #  variables:
 #    DOCKER_HOST: tcp://docker:2375
 #    DOCKER_DRIVER: overlay2
