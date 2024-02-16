@@ -58,7 +58,6 @@ security_test-job:
   script:
     - echo "Running security tests with Bandit..."
     - bandit -r src/
-  allow_failure: true
   dependencies:
     - security_test-job
 
