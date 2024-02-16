@@ -66,14 +66,14 @@ security_test-job:
 
 zap_scan-job:
   stage: security_test
-  #image: owasp/zap2docker-stable
-  image: docker
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_USERNAME: $CI_DOCKER_USER  # GitLab Docker 레지스트리 사용자 이름
-    DOCKER_PASSWORD: $CI_DOCKER_PASSWORD
+  image: owasp/zap2docker-stable
+  #image: docker
+#  variables:
+#    DOCKER_HOST: tcp://docker:2375
+#    DOCKER_DRIVER: overlay2
+#    DOCKER_TLS_CERTDIR: ""
+#    DOCKER_USERNAME: $CI_DOCKER_USER  # GitLab Docker 레지스트리 사용자 이름
+#    DOCKER_PASSWORD: $CI_DOCKER_PASSWORD
   script:
     - docker pull owasp/zap2docker-stable
     - docker run -t --name $ZAP_CONTAINER_NAME owasp/zap2docker-stable zap-baseline.py -t $ZAP_BASE_URL
