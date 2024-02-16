@@ -7,6 +7,7 @@ from csms_backend import retr_charger_list
 app = Flask(__name__)
 app.config['API_KEY'] = os.environ.get('API_KEY')
 
+
 # Kafka 서버 및 topic 설정
 bootstrap_servers = 'juha.iptime.org:29092'
 topic = 'topic-to-charger'
