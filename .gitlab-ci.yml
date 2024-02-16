@@ -66,7 +66,7 @@ security_test-job:
   dependencies:
     - security_test-job
 
-zap_scan:
+zap_scan-job:
   stage: security_test
   image: owasp/zap2docker-stable
   script:
