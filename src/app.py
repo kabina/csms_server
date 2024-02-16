@@ -84,7 +84,6 @@ def store_data():
     except Exception as e:
         return jsonify({'result': 'error', 'message': str(e)})
 
-
 @app.route('/api/gen_api_key', methods=['POST'])
 def gen_api_key():
     try:

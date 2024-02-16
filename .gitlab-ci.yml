@@ -60,7 +60,7 @@ security_test-job:
   allow_failure: true
   dependencies:
     - security_test-job
-    -
+
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
   image: docker
