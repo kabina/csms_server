@@ -6,4 +6,4 @@ export DB_HOST=juha.iptime.org
 export DB_PORT=5432
 export DB_SEVER=csms
 
-/home/kabina/envs/csms/bin/python csms_server.py
+/home/kabina/venv/csms/bin/python csms_server.py

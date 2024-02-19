@@ -6,4 +6,4 @@ export DB_HOST=juha.iptime.org
 export DB_PORT=5432
 export DB_SEVER=csms
 
-/home/kabina/envs/csms/bin/gunicorn -w 4 -b 0.0.0.0:5000 ev_rest:app
+/home/kabina/venv/csms/bin/gunicorn -w 4 -b 0.0.0.0:5000 ev_rest:app
