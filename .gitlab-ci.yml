@@ -108,7 +108,8 @@ deploy-job:      # This job runs in the deploy stage.
     - docker login -u $CI_DOCKER_USER -p $CI_DOCKER_PASSWORD
     - docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker pull $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG -v /config:/var/gitlab-runner/config
+    - docker exec -it csms-server /bin/sh -c 'ls /config'
     - docker run -d -p 8765:8765 $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
 
   rules:
