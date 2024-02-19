@@ -25,7 +25,7 @@ stages:          # List of stages for jobs, and their order of execution
 
 variables:
   ZAP_CONTAINER_NAME: "zap"
-  ZAP_BASE_URL: "http://nheo.duckdns.org:8765"
+  ZAP_BASE_URL: "https://nheo.duckdns.org:5000"
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
