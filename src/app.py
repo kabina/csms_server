@@ -96,3 +96,4 @@ if __name__ == '__main__':
     app.run(debug=False, host='127.0.0.1', port=5000)
 
 # deploy commit name : commit of 2024. 02. 19. (월) 10:54:05 KST\n
+# deploy commit name : commit of 2024. 02. 19. (월) 11:53:13 KST\n
