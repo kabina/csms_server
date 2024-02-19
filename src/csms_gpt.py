@@ -98,7 +98,7 @@ async def main():
 
     # WebSocket 서버를 비동기로 실행
     websocket_server_task = asyncio.create_task(websockets.serve(
-        handle_websocket_connection, '0.0.0.0', WEBSOCKET_PORT, subprotocols=[SUBPROTOCOL], ssl=ssl_context
+        handle_websocket_connection, '127.0.0.1', WEBSOCKET_PORT, subprotocols=[SUBPROTOCOL], ssl=ssl_context
     ))
 
     # 두 개의 task를 함께 실행

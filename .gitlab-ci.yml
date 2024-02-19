@@ -21,6 +21,11 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - security_test
   - deploy
+  - zap_scan
+
+variables:
+  ZAP_CONTAINER_NAME: "zap"
+  ZAP_BASE_URL: "http://nheo.duckdns.org:8765"
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
@@ -47,14 +52,19 @@ lint-test-job:   # This job also runs in the test stage.
     - sleep 10
     - echo "No lint issues found."
 
+
 security_test-job:
   stage: security_test
+  image: python:3.10
   before_script:
+    - apt update  # 패키지 목록을 업데이트
+    - apt install -y python3-pip  # pip를 포함한 Python3를 설치
+    - ln -s /usr/bin/python3 /usr/bin/python
     - pip install bandit
   script:
     - echo "Running security tests with Bandit..."
     - bandit -r src/
-  allow_failure: true
+
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
@@ -106,3 +116,18 @@ deploy-job:      # This job runs in the deploy stage.
         - "src/**/*"
       when: always
 
+zap_scan-job:
+  stage: zap_scan
+  image:
+    name: owasp/zap2docker-weekly
+  before_script:
+    - mkdir -p /zap/wrk
+  script:
+    - pwd
+    - ls
+    - zap-full-scan.py -t "https://nheo.duckdns.org:5000" -m 1 -d -I -r testreport.html
+    - cp /zap/wrk/testreport.html testreport.html
+  artifacts:
+    when: always
+    paths:
+      - testreport.html

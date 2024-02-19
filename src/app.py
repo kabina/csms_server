@@ -7,7 +7,7 @@ from csms_backend import retr_charger_list
 app = Flask(__name__)
 app.config['API_KEY'] = os.environ.get('API_KEY')
 
-# Kafka 서버 및 topic 설정
+
 bootstrap_servers = 'juha.iptime.org:29092'
 topic = 'topic-to-charger'
 # kafka topic 생성
@@ -83,7 +83,6 @@ def store_data():
     except Exception as e:
         return jsonify({'result': 'error', 'message': str(e)})
 
-
 @app.route('/api/gen_api_key', methods=['POST'])
 def gen_api_key():
     try:
@@ -94,11 +93,5 @@ def gen_api_key():
         return jsonify({'result': 'error', 'message': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
-# deploy commit name : commit of 2024. 02. 14. (수) 18:15:10 KST\n
-# deploy commit name : commit of 2024. 02. 15. (목) 09:46:38 KST\n
-# deploy commit name : commit of 2024. 02. 16. (금) 09:18:22 KST\n
-# deploy commit name : commit of 2024. 02. 16. (금) 09:20:15 KST\n
-# deploy commit name : commit of 2024. 02. 16. (금) 09:42:21 KST\n
-# deploy commit name : commit of 2024. 02. 16. (금) 09:42:26 KST\n
-# deploy commit name : commit of 2024. 02. 19. (월) 10:44:59 KST\n
+    app.run(debug=False, host='127.0.0.1', port=5000)
+

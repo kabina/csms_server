@@ -1,11 +1,9 @@
 import asyncio
 import logging
 import ssl
-from redis import StrictRedis
 from ChargePoint import ChargePoint
 from confluent_kafka import Consumer, KafkaError
 import multiprocessing
-from multiprocessing import freeze_support
 
 try:
     import websockets
