@@ -116,6 +116,7 @@ def gen_api_key():
         return jsonify({'result': 'error', 'message': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=False, host='0.0.0.0')
+    #app.run(debug=False, host='0.0.0.0')
+    app.run()
 
 
