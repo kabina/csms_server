@@ -230,6 +230,9 @@ def check_connection(model, serial, auth_key) :
     :return: 403 if not valid
     """
 
+    print(model)
+    print(serial)
+    print(auth_key)
     total_energy = 0
     connection = None
     try:

@@ -20,6 +20,7 @@ RUN pip install --upgrade pip
 # Install gunicorn
 RUN pip install confluent_kafka
 RUN pip install ocpp
+RUN pip install psycopg2-binary
 RUN pip install psycopg2
 RUN pip install websockets
 RUN pip install aiokafka
