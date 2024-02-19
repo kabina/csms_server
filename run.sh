@@ -1,7 +1,7 @@
 docker stop `docker ps | grep runapp | awk '{print $1}'`
 docker rm `docker ps -a| grep runapp | awk '{print $1}'`
 docker images | grep csms-server | awk '{print $3}'
-docker run -v /var/gitlab-runner/config:/config -d -p 5000:5000 kabina/csms-server:latest
+docker run -v /var/gitlab/config/ssl:/config -d -p 5000:5000 kabina/csms-server:latest
 docker stop `docker ps | grep runsock | awk '{print $1}'`
 docker rm `docker ps -a| grep runsock | awk '{print $1}'`
 docker images | grep socket-server | awk '{print $3}'
