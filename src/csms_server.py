@@ -119,7 +119,7 @@ async def main():
     # WebSocket 서버 실행
     server_task = websockets.serve(
         lambda ws, path: handle_websocket_connection(ws, path, ws_manager, producer),
-        '0.0.0.0', WEBSOCKET_PORT, subprotocols=[SUBPROTOCOL], ssl=ssl_context
+        'nheo.duckdns.org", WEBSOCKET_PORT, subprotocols=[SUBPROTOCOL], ssl=ssl_context
     )
 
     # 두 작업을 병렬로 실행
