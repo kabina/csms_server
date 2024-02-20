@@ -119,16 +119,21 @@ deploy-job:      # This job runs in the deploy stage.
 
 zap_scan-job:
   stage: zap_scan
-  image: docker:latest
-  services:
-    - docker:dind
-  variables:
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_DRIVER: overlay2
-    DOCKER_TLS_CERTDIR: ""
+    image:
+    name: owasp/zap2docker-stable:latest
+  before_script:
+    - mkdir -p /zap/wrk
   script:
-    - docker run -v $(pwd):/zap/wrk/:rw owasp/zap2docker-stable zap-full-scan.py -t https://nheo.duckdns.org:5000 -r report.html
+    - echo "Starting zap-api-scan.py baseline scan"
+    - cp ./owasp-zap/warn-levels.config /zap/wrk
+    - zap-api-scan.py -t https://nheo.duckdns.org:5000 -c warn-levels.config -w testreport.md -r testreport.html -S -I
+    - cp /zap/wrk/testreport.md testreport.md
+    - cp /zap/wrk/testreport.html testreport.html
+    - grep -Po '\| High \| 0 \|' testreport.md
+    - grep -Po '\| Medium \| 0 \|' testreport.md
   artifacts:
     when: always
     paths:
-      - report.html
+      - zap.out
+      - testreport.md
+      - testreport.html
