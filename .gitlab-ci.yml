@@ -129,7 +129,6 @@ zap_scan-job:
     - zap-full-scan.py -t https://nheo.duckdns.org:5000 -r testreport.html
     - cp /zap/wrk/testreport.md testreport.md
     - cp /zap/wrk/testreport.html testreport.html
-    - grep -Po '\| High \| 0 \|' testreport.md
     - grep -Po '\| Medium \| 0 \|' testreport.md
     - sleep 500
   artifacts:
