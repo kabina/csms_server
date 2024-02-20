@@ -35,4 +35,4 @@ ENV NAME World
 RUN chmod +x /app/runsock.sh
 #CMD ["runapp.sh"]
 # Run app.py when the container launches
-CMD ["/app/runsock.sh"]
+CMD ["runsock.sh"]
