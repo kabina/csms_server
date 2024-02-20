@@ -119,7 +119,7 @@ deploy-job:      # This job runs in the deploy stage.
 
 zap_scan-job:
   stage: zap_scan
-    image: docker:latest
+    image: docker
   services:
     - docker:dind
   variables:
