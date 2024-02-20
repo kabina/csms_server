@@ -128,8 +128,3 @@ zap_scan-job:
       #- cp ./owasp-zap/warn-levels.config /zap/wrk
     - zap-full-scan.py -t https://nheo.duckdns.org:5000 -r /zap/wrk/testreport.html
       #- cp /zap/wrk/testreport.html testreport.html
-    - sleep 500
-  artifacts:
-    when: always
-    paths:
-      - /zap/wrk/testreport.html
