@@ -122,11 +122,12 @@ zap_scan-job:
   image:
     name: owasp/zap2docker-weekly
   script:
-    - zap-full-scan.py -t "https://nheo.duckdns.org:5000" -r /zap/report.html -J /zap/report.json
+    docker run \
+    -v /zap:/zap \
+    owasp/zap2docker-weekly \
+    zap-full-scan.py -t "https://nheo.duckdns.org:5000" -r /zap/report.html -J /zap/report.json
   artifacts:
     when: always
     paths:
       - /zap/report.html
       - /zap/report.json
-  volumes:
-    - /zap:/zap
