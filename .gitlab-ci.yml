@@ -119,7 +119,7 @@ deploy-job:      # This job runs in the deploy stage.
 
 zap_scan-job:
   stage: zap_scan
-    image:
+  image:
     name: owasp/zap2docker-stable:latest
   before_script:
     - mkdir -p /zap/wrk
