@@ -119,7 +119,7 @@ deploy-job:      # This job runs in the deploy stage.
 
 zap_scan-job:
   stage: zap_scan
-    image: owasp/zap2docker-weekly
+    image: owasp/zap2docker-stable
   script:
     - zap-full-scan.py -t "https://nheo.duckdns.org:5000" -r /zap/report.html -J /zap/report.json
   artifacts:
