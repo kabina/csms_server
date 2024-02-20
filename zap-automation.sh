@@ -3,9 +3,8 @@
 # Set the target URL to scan
 TARGET_URL=https://nheo.duckdns.org:5000
 
-
 # Start ZAP
-zap-cli -host 0.0.0.0 -port 8080 &
+zap-cli --zap-url 0.0.0.0 --port 8080 &
 
 # Wait for ZAP to start
 sleep 10
