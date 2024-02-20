@@ -120,12 +120,14 @@ deploy-job:      # This job runs in the deploy stage.
 zap_scan-job:
   stage: zap_scan
   image:
-    name: owasp/zap2docker-weekly
+    name: docker
+    entrypoint: [""]
   script:
-    docker run \
-    -v /zap:/zap \
-    owasp/zap2docker-weekly \
-    zap-full-scan.py -t "https://nheo.duckdns.org:5000" -r /zap/report.html -J /zap/report.json
+    - docker pull owasp/zap2docker-weekly
+    - docker run --rm \
+      -v /zap:/zap \
+      owasp/zap2docker-weekly \
+      zap-full-scan.py -t "https://nheo.duckdns.org:5000" -r /zap/report.html -J /zap/report.json
   artifacts:
     when: always
     paths:
