@@ -131,4 +131,4 @@ zap_scan-job:
   artifacts:
     when: always
     paths:
-      - /zap/wrk/report.html
+      - report.html
