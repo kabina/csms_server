@@ -115,6 +115,21 @@ def gen_api_key():
     except Exception as e:
         return jsonify({'result': 'error', 'message': str(e)})
 
+@app.after_request
+def add_hsts_header(response):
+    response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
+    return response
+
+@app.after_request
+def add_csp_header(response):
+    response.headers['Content-Security-Policy'] = "default-src 'self'"
+    return response
+
+@app.after_request
+def add_permissions_policy_header(response):
+    response.headers['Permissions-Policy'] = "geolocation=(self 'https://example.com')"
+    return response
+
 if __name__ == '__main__':
     #app.run(debug=False, host='0.0.0.0')
     app.run()
