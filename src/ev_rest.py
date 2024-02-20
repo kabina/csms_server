@@ -127,7 +127,7 @@ def add_csp_header(response):
 
 @app.after_request
 def add_permissions_policy_header(response):
-    response.headers['Permissions-Policy'] = "geolocation=(self 'https://example.com')"
+    response.headers['Permissions-Policy'] = "geolocation=(self 'https://nheo.duckdns.org')"
     return response
 
 if __name__ == '__main__':
