@@ -9,6 +9,7 @@ from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 from csms_backend import check_connection
 
 WEBSOCKET_PORT = os.environ.get('SOCK_PORT')
+WEBSOCKET_SERVER = os.environ.get('SOCK_SERVER')
 SUBPROTOCOL = 'ocpp1.6'
 
 logging.basicConfig(level=logging.INFO)
@@ -119,7 +120,7 @@ async def main():
     # WebSocket 서버 실행
     server_task = websockets.serve(
         lambda ws, path: handle_websocket_connection(ws, path, ws_manager, producer),
-        "192.168.0.108", WEBSOCKET_PORT, subprotocols=[SUBPROTOCOL], ssl=ssl_context
+        WEBSOCKET_SERVER, WEBSOCKET_PORT, subprotocols=[SUBPROTOCOL], ssl=ssl_context
     )
 
     # 두 작업을 병렬로 실행
