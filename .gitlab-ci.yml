@@ -123,7 +123,6 @@ zap_scan-job:
     name: owasp/zap2docker-weekly
   script:
     - zap-full-scan.py -t "https://nheo.duckdns.org:5000"
-    - cp /zap/wrk/testreport.html testreport.html
   artifacts:
     when: always
     paths:
