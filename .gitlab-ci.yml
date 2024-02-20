@@ -125,8 +125,8 @@ zap_scan-job:
     - mkdir -p /zap/wrk
   script:
     - echo "Starting zap-api-scan.py baseline scan"
-    - cp ./owasp-zap/warn-levels.config /zap/wrk
-    - zap-api-scan.py -t https://nheo.duckdns.org:5000 -c warn-levels.config -w testreport.md -r testreport.html -S -I
+      #- cp ./owasp-zap/warn-levels.config /zap/wrk
+    - zap-full-scan.py -t https://nheo.duckdns.org:5000 -c warn-levels.config -w testreport.md -r testreport.html -S -I
     - cp /zap/wrk/testreport.md testreport.md
     - cp /zap/wrk/testreport.html testreport.html
     - grep -Po '\| High \| 0 \|' testreport.md
