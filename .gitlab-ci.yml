@@ -127,9 +127,7 @@ zap_scan-job:
     - echo "Starting zap-api-scan.py baseline scan"
       #- cp ./owasp-zap/warn-levels.config /zap/wrk
     - zap-full-scan.py -t https://nheo.duckdns.org:5000 -r testreport.html
-    - cp /zap/wrk/testreport.md testreport.md
     - cp /zap/wrk/testreport.html testreport.html
-    - grep -Po '\| Medium \| 0 \|' testreport.md
     - sleep 500
   artifacts:
     when: always
