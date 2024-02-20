@@ -1,5 +1,5 @@
 #!/bin/sh
-export SOCK_SEVER=nheo.duckdns.org
+export SOCK_SEVER=0.0.0.0
 export SOCK_PORT=8765
 export DB_USER=csms
 export DB_PASSWORD=1q2w3e4r
