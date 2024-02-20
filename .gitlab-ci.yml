@@ -125,4 +125,4 @@ zap_scan-job:
   artifacts:
     when: always
     paths:
-      - /zap/report.html
+      - report.html
