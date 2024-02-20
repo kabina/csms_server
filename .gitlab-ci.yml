@@ -49,7 +49,7 @@ lint-test-job:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
   script:
     - echo "Linting code... This will take about 10 seconds."
-    - sleep 10
+    - sleep 5
     - echo "No lint issues found."
 
 
@@ -95,12 +95,12 @@ deploy-job:      # This job runs in the deploy stage.
     - docker push $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker push $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker images
-    - sleep 10
+    - sleep 5
     - echo $DOCKER_IMAGE_NAME $DOCKER_IMAGE_TAG
       #- docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     #- docker run -d -p 8765:8765 csms-server-websocket
     - docker ps
-    - sleep 10
+    - sleep 5
     - docker ps -a
     - docker images
     - echo "Docker deploy complete ..."
@@ -126,7 +126,7 @@ zap_scan-job:
   script:
     - echo "Starting zap-api-scan.py baseline scan"
       #- cp ./owasp-zap/warn-levels.config /zap/wrk
-    - zap-full-scan.py -t https://nheo.duckdns.org:5000 -c warn-levels.config -w testreport.md -r testreport.html -S -I
+    - zap-full-scan.py -t https://nheo.duckdns.org:5000 -c warn-levels.config -w testreport.md -r testreport.html
     - cp /zap/wrk/testreport.md testreport.md
     - cp /zap/wrk/testreport.html testreport.html
     - grep -Po '\| High \| 0 \|' testreport.md
