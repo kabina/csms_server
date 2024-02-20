@@ -121,14 +121,10 @@ zap_scan-job:
   stage: zap_scan
   image:
     name: owasp/zap2docker-weekly
-  before_script:
-    - mkdir -p /zap/wrk
   script:
-    - pwd
-    - ls
-    - zap-full-scan.py -t "https://nheo.duckdns.org:5000" -m 1 -d -I -r testreport.html
+    - zap-full-scan.py -t "https://nheo.duckdns.org:5000"
     - cp /zap/wrk/testreport.html testreport.html
   artifacts:
     when: always
     paths:
-      - testreport.html
+      - /zap/testreport.html
