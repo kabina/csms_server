@@ -127,8 +127,8 @@ zap_scan-job:
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
   script:
-    - docker run -v /zap/wrk:/zap/wrk/ -t owasp/zap2docker-stable zap-full-scan.py -t "https://nheo.duckdns.org:5000" -r report.html
+    - docker run -v /zap/wrk:/zap/wrk/ -t owasp/zap2docker-stable zap-full-scan.py -t "https://nheo.duckdns.org:5000" -r /zap/wrk/report.html
   artifacts:
     when: always
     paths:
-      - report.html
+      - /zap/wrk/report.html
