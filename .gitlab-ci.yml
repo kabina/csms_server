@@ -39,7 +39,7 @@ build-job:       # This job runs in the build stage, which runs first.
     - echo "Build docker complete."
 
 unit-test-job:   # This job runs in the test stage.
-  needs: build-job
+  needs: ["build-job"]
   stage: test    # It only starts when the job in the build stage completes successfully.
   script:
     - echo "Running unit tests... This will take about 60 seconds."
@@ -47,7 +47,7 @@ unit-test-job:   # This job runs in the test stage.
     - echo "Code coverage is 90%"
 
 lint-test-job:   # This job also runs in the test stage.
-  needs: unit-test-job
+  needs: ["unit-test-job"]
   stage: test    # It can run at the same time as unit-test-job (in parallel).
   only:
     - master
@@ -58,7 +58,7 @@ lint-test-job:   # This job also runs in the test stage.
     - pylint --fail-under=8 src
 
 security-test-job:
-  needs: lint-test-job
+  needs: ["lint-test-job"]
   stage: security_test
   image: python:3.10
   before_script:
@@ -71,7 +71,7 @@ security-test-job:
     - bandit -r src/
 
 deploy-job:      # This job runs in the deploy stage.
-  needs: security-test-job
+  needs: ["security-test-job"]
   stage: deploy
   image: docker
   variables:
@@ -122,7 +122,7 @@ deploy-job:      # This job runs in the deploy stage.
       when: always
 
 zap_scan-job:
-  needs: deploy-job
+  needs: ["deploy-job"]
   stage: zap_scan
   image:
     name: owasp/zap2docker-stable:latest
