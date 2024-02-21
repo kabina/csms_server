@@ -113,11 +113,11 @@ deploy-job:      # This job runs in the deploy stage.
     - docker run -d -p 8765:8765 $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
 
   rules:
-    - changes:
+
+    - if: '$CI_COMMIT_REF_NAME == "main"'
+      changes:
         - "src/**/*"
       when: always
-  except:
-    - master
 
 zap_scan-job:
   stage: zap_scan
