@@ -122,12 +122,12 @@ def add_hsts_header(response):
 
 @app.after_request
 def add_csp_header(response):
-    response.headers['Content-Security-Policy'] = "default-src 'self'"
+    response.headers['Content-Security-Policy'] = "default-src 'self'; img-src https://*; child-src 'none';"
     return response
 
 @app.after_request
 def add_permissions_policy_header(response):
-    response.headers['Permissions-Policy'] = "geolocation=(self 'https://nheo.duckdns.org')"
+    response.headers['Permissions-Policy'] = "geolocation=(self 'https://nheo.duckdns.org:5000')"
     return response
 
 if __name__ == '__main__':
