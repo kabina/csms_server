@@ -20,7 +20,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build
   - test
   - security_test
-  - deploy
+    #- deploy
   - zap_scan
 
 variables:
