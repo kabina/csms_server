@@ -98,9 +98,6 @@ deploy-job:      # This job runs in the deploy stage.
     - echo $DOCKER_IMAGE_NAME $DOCKER_IMAGE_TAG
       #- docker run -d -p 5000:5000 $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     #- docker run -d -p 8765:8765 csms-server-websocket
-    - docker ps
-    - sleep 5
-    - docker ps -a
     - docker images
     - echo "Docker deploy complete ..."
   after_script:
@@ -108,8 +105,8 @@ deploy-job:      # This job runs in the deploy stage.
     - docker pull $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker pull $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
     - docker run -d --name csms-server -p 5000:80 -v /var/gitlab/config/ssl:/config $DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG
-    - docker exec -it csms-server /bin/sh -c 'ls /config'
     - docker run -d --name socket-server -p 8765:80 $DOCKER_SOCKET_IMAGE_NAME:$DOCKER_IMAGE_TAG
+    - docker ps
 
   rules:
 
