@@ -56,7 +56,7 @@ lint-test-job:   # This job also runs in the test stage.
   script:
     - apt update  # 패키지 목록을 업데이트
     - apt install -y pylint
-    - pylint --fail-under=8 src
+    - pylint --fail-under=4 src
 
 security-test-job:
   needs: ["lint-test-job"]

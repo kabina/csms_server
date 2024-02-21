@@ -22,7 +22,7 @@ class ChargePoint(cp):
         """
 
     @on(Action.GetConfiguration)
-    def on_get_configuration(self, status: str, **kwargs):
+    def on_get_configuration(self, **kwargs):
 
         return call_result.GetConfigurationPayload(
             status=RegistrationStatus.accepted,

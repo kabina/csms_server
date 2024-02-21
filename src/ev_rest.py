@@ -58,7 +58,7 @@ def get_charger_list():
 
 @app.route('/api/get_charger_log', methods=['POST'], endpoint='/api/get_charger_log')
 @require_api_key
-def get_charger_list():
+def get_charger_log():
     try:
         # POST 요청에서 데이터 추출
         data = request.get_json()
