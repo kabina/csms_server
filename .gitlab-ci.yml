@@ -47,11 +47,11 @@ unit-test-job:   # This job runs in the test stage.
 
 lint-test-job:   # This job also runs in the test stage.
   stage: test    # It can run at the same time as unit-test-job (in parallel).
+  only:
+    - master
+  allow_failure: true
   script:
-    - echo "Linting code... This will take about 10 seconds."
-    - sleep 5
-    - echo "No lint issues found."
-
+    - pylint --fail-under=8 src
 
 security_test-job:
   stage: security_test
@@ -64,7 +64,6 @@ security_test-job:
   script:
     - echo "Running security tests with Bandit..."
     - bandit -r src/
-
 
 deploy-job:      # This job runs in the deploy stage.
   stage: deploy
