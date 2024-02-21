@@ -63,7 +63,7 @@ sonarqube:
   stage: test
   image: sonarsource/sonar-scanner-cli
   script:
-    - sonar-scanner -Dsonar.host.url=http://juha.iptime.org:9000 -Dsonar.login=$SONAR_TOKEN
+    - sonar-scanner -Dsonar.projectKey=csms-server -Dsonar.host.url=http://juha.iptime.org:9000 -Dsonar.login=$SONAR_TOKEN
   only:
     - master
 
