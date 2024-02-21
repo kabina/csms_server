@@ -58,6 +58,14 @@ lint-test-job:   # This job also runs in the test stage.
     - apt install -y pylint
     - pylint --fail-under=4 src
 
+sonarqube:
+  needs: ["lint-test-job"]
+  stage: test
+  script:
+    - sonar-scanner -Dsonar.host.url=http://juha.iptime.org:9000 -Dsonar.login=$SONAR_TOKEN
+  only:
+    - master
+
 security-test-job:
   needs: ["lint-test-job"]
   stage: security_test
