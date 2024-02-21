@@ -20,7 +20,7 @@ stages:          # List of stages for jobs, and their order of execution
   - build
   - test
   - security_test
-    #- deploy
+  - deploy
   - zap_scan
 
 variables:
@@ -116,6 +116,8 @@ deploy-job:      # This job runs in the deploy stage.
     - changes:
         - "src/**/*"
       when: always
+  except:
+    - master
 
 zap_scan-job:
   stage: zap_scan
