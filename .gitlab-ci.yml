@@ -51,6 +51,8 @@ lint-test-job:   # This job also runs in the test stage.
     - master
   allow_failure: true
   script:
+    - apt update  # 패키지 목록을 업데이트
+    - apt install pylint
     - pylint --fail-under=8 src
 
 security_test-job:
@@ -124,7 +126,7 @@ zap_scan-job:
   script:
     - echo "Starting zap-api-scan.py baseline scan"
       #- cp ./owasp-zap/warn-levels.config /zap/wrk
-    - zap-api-scan.py -t https://csms-server:5000 -f openapi -r testreport.html
+    - zap-api-scan.py -t http://socket-server -f openapi -r testreport.html
       #- cp /zap/wrk/testreport.html testreport.html
   artifacts:
     paths:
