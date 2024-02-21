@@ -114,7 +114,7 @@ deploy-job:      # This job runs in the deploy stage.
 
   rules:
 
-    - if: '$CI_COMMIT_REF_NAME == "main" || 1==1'
+    - if: '$CI_COMMIT_REF_NAME == "master"'
       changes:
         - "src/**/*"
       when: always
