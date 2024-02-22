@@ -1,3 +1,5 @@
+"""csms_server for ocpp1.6 and 2.0.1
+"""
 import asyncio
 import ssl
 import logging
@@ -11,7 +13,7 @@ from csms_backend import check_connection
 
 WEBSOCKET_PORT = os.environ.get('SOCK_PORT')
 WEBSOCKET_SERVER = os.environ.get('SOCK_SERVER')
-SUBPROTOCOL = 'ocpp1.6'
+SUBPROTOCOL = ['ocpp1.6', 'ocpp2.0.1']
 
 logging.basicConfig(level=logging.INFO)
 
@@ -90,19 +92,19 @@ async def handle_websocket_connection(websocket, path, ws_manager, producer):
     :param ws_manager:
     :param producer:
     """
-    proto = {"ocpp1.6":cp16, "ocpp2.0.1":cp201}
-    charger_model, charger_serial = path.strip("/").split("/")[-2:]
+    proto = {"ocpp16":cp16, "ocpp201":cp201}
+    uri_protocol, charger_model, charger_serial = path.strip("/").split("/")[-3:]
     authorizatiop_key = websocket.request_headers.get('Authorization')
-    logging.info(f"Got WebSocket connection for {charger_serial}")
+    logging.info("Got WebSocket connection for %s", charger_serial)
 
     requested_protocols = websocket.request_headers.get('Sec-WebSocket-Protocol')
-    if SUBPROTOCOL not in (requested_protocols or '').split(','):
-        logging.error(f"Invalid subprotocol requested: {requested_protocols}")
+    if requested_protocols not in SUBPROTOCOL:
+        logging.error("Invalid subprotocol requested: %s", requested_protocols)
         return await websocket.close()
     # Connection 정보 체크
     mid = check_connection(charger_model, charger_serial, authorizatiop_key)
     if not mid:
-        logging.error(f"Invalid Connetion Information from {path}")
+        logging.error("Invalid Connetion Information from %s", path)
         return await websocket.close(1008, "Connection refused")
 
     # WebSocket connection 정보 추출
@@ -116,11 +118,11 @@ async def handle_websocket_connection(websocket, path, ws_manager, producer):
     ws_manager.add_connection(mid, websocket)
 
     #cp = ChargePoint(mid, websocket)
-    cp = proto[requested_protocols](mid, websocket)
+    cp = proto[uri_protocol](mid, websocket)
     try :
         await cp.start()
-    except websockets.exceptions.ConnectionClosedOK as e:
-        logging.info(f"WebSocket connection closed for {mid}")
+        except websockets.exceptions.ConnectionClosedOK as e:
+        logging.info("WebSocket connection closed for %s", mid)
 
     # Kafka에 WebSocket connection 정보 전송
     await producer.send_and_wait(KAFKA_TOPIC_SOCKET_INFO, key=mid, value=websocket_info)
@@ -130,7 +132,7 @@ async def handle_websocket_connection(websocket, path, ws_manager, producer):
     try:
         await websocket.wait_closed()
     except websockets.exceptions.ConnectionClosedOK:
-        logging.info(f"WebSocket connection closed for {mid}")
+        logging.info("WebSocket connection closed for %s", mid)
     except websockets.exceptions.ConnectionClosedError:
         logging.error(f"WebSocket connection error for {mid}")
     finally:
@@ -155,11 +157,12 @@ async def main():
     # WebSocket 서버 실행
     server_task = websockets.serve(
         lambda ws, path: handle_websocket_connection(ws, path, ws_manager, producer),
-        WEBSOCKET_SERVER, WEBSOCKET_PORT, subprotocols=[SUBPROTOCOL], ssl=ssl_context
+        WEBSOCKET_SERVER, WEBSOCKET_PORT, subprotocols=SUBPROTOCOL, ssl=ssl_context
     )
 
     # 두 작업을 병렬로 실행
     await asyncio.gather(server_task, consumer_task)
+
 
 if __name__ == "__main__":
     asyncio.run(main())
