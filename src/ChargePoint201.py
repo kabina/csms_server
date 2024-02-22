@@ -30,5 +30,4 @@ class ChargePoint(cp):
     def on_status_notification(self, timestamp, connector_status, evse_id, connector_id):
         print("Got a StatusNotification!")
         return call_result.StatusNotificationPayload(
-            current_time=datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S") + "Z"
         )
