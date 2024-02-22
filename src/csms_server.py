@@ -121,7 +121,7 @@ async def handle_websocket_connection(websocket, path, ws_manager, producer):
     cp = proto[uri_protocol](mid, websocket)
     try :
         await cp.start()
-        except websockets.exceptions.ConnectionClosedOK as e:
+    except websockets.exceptions.ConnectionClosedOK as e:
         logging.info("WebSocket connection closed for %s", mid)
 
     # Kafka에 WebSocket connection 정보 전송
