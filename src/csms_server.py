@@ -4,7 +4,8 @@ import logging
 import websockets
 import json
 import os
-from ChargePoint import ChargePoint
+from ChargePoint16 import ChargePoint as cp16
+from ChargePoint201 import ChargePoint as cp201
 from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 from csms_backend import check_connection
 
@@ -58,6 +59,7 @@ async def consume_kafka(ws_manager):
         await consumer.stop()
 
 async def handle_websocket_connection(websocket, path, ws_manager, producer):
+    proto = {"ocpp1.6":cp16, "ocpp2.0.1":cp201}
     charger_model, charger_serial = path.strip("/").split("/")[-2:]
     authorizatiop_key = websocket.request_headers.get('Authorization')
     logging.info(f"Got WebSocket connection for {charger_serial}")
@@ -82,7 +84,8 @@ async def handle_websocket_connection(websocket, path, ws_manager, producer):
     # WebSocket connection 관리자에 추가
     ws_manager.add_connection(mid, websocket)
 
-    cp = ChargePoint(mid, websocket)
+    #cp = ChargePoint(mid, websocket)
+    cp = proto[requested_protocols](mid, websocket)
     try :
         await cp.start()
     except websockets.exceptions.ConnectionClosedOK as e:
