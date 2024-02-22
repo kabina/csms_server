@@ -1,12 +1,12 @@
 import asyncio
 import ssl
 import logging
-import websockets
 import json
 import os
+import websockets
+from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 from ChargePoint16 import ChargePoint as cp16
 from ChargePoint201 import ChargePoint as cp201
-from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
 from csms_backend import check_connection
 
 WEBSOCKET_PORT = os.environ.get('SOCK_PORT')
@@ -20,20 +20,44 @@ KAFKA_TOPIC_SOCKET_INFO = 'topic-socket-info'
 KAFKA_TOPIC_MESSAGES = 'topic-to-charger'
 
 class WebSocketManager:
+    """WebSocketManager."""
+
     def __init__(self):
+        """__init__."""
         self.connections = {}
 
     def add_connection(self, key, websocket):
+        """add_connection.
+
+        :param key:
+        :param websocket:
+        """
         print(f"Adding WebSocket connection for {key}")
         self.connections[key] = websocket
 
     def get_connection(self, key):
+        """get_connection.
+
+        :param key:
+        """
+        """get_connection.
+
+        :param key:
+        """
         return self.connections.get(key)
 
     def remove_connection(self, key):
+        """remove_connection.
+
+        :param key:
+        """
         del self.connections[key]
 
 async def consume_kafka(ws_manager):
+    """consume_kafka.
+
+    :param ws_manager:
+    """
     consumer = AIOKafkaConsumer(
         KAFKA_TOPIC_MESSAGES,
         bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
@@ -59,6 +83,13 @@ async def consume_kafka(ws_manager):
         await consumer.stop()
 
 async def handle_websocket_connection(websocket, path, ws_manager, producer):
+    """handle_websocket_connection.
+
+    :param websocket:
+    :param path:
+    :param ws_manager:
+    :param producer:
+    """
     proto = {"ocpp1.6":cp16, "ocpp2.0.1":cp201}
     charger_model, charger_serial = path.strip("/").split("/")[-2:]
     authorizatiop_key = websocket.request_headers.get('Authorization')
@@ -107,6 +138,7 @@ async def handle_websocket_connection(websocket, path, ws_manager, producer):
         ws_manager.remove_connection(mid)
 
 async def main():
+    """main."""
     ssl_context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     ssl_context.load_cert_chain(certfile="certificate.pem", keyfile="private-key.pem")
 

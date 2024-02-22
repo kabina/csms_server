@@ -1,3 +1,4 @@
+from datetime import datetime
 from ocpp.routing import on
 from ocpp.v16 import ChargePoint as cp
 from ocpp.v16 import call
@@ -6,9 +7,10 @@ from ocpp.v16.enums import Action, RegistrationStatus, AuthorizationStatus
 from ocpp.v16.datatypes import IdTagInfo, MeterValue
 from csms_backend import proc_message, get_idtags_status, create_transaction, update_meter_value, stop_transaction, update_charger_status
 
-from datetime import datetime
 
 class ChargePoint(cp):
+    """ChargePoint."""
+
 
     # ChargePoint에 정의된 function을 재정의하여 추가로 메시지를 저장하도록 처리
     async def route_message(self, raw_msg):
@@ -44,6 +46,14 @@ class ChargePoint(cp):
     def on_boot_notification(
         self, charge_point_vendor: str, charge_point_model: str, **kwargs
     ):
+        """on_boot_notification.
+
+        :param charge_point_vendor:
+        :type charge_point_vendor: str
+        :param charge_point_model:
+        :type charge_point_model: str
+        :param kwargs:
+        """
         return call_result.BootNotificationPayload(
             current_time=datetime.utcnow().isoformat(),
             interval=10,
@@ -54,6 +64,16 @@ class ChargePoint(cp):
     def on_status_notification(
         self, connector_id: int, error_code:str, status: str, **kwargs
     ):
+        """on_status_notification.
+
+        :param connector_id:
+        :type connector_id: int
+        :param error_code:
+        :type error_code: str
+        :param status:
+        :type status: str
+        :param kwargs:
+        """
         update_charger_status(self.id, connector_id, status, error_code)
         return call_result.StatusNotificationPayload(
         )
@@ -70,6 +90,12 @@ class ChargePoint(cp):
     def on_authorize(
         self, id_tag: str, **kwargs
     ):
+        """on_authorize.
+
+        :param id_tag:
+        :type id_tag: str
+        :param kwargs:
+        """
 
         return call_result.AuthorizePayload(
             id_tag_info = IdTagInfo(
@@ -106,6 +132,16 @@ class ChargePoint(cp):
     def on_meter_values(
         self, connector_id: int, transaction_id:int, meter_value:MeterValue, **kwargs
     ):
+        """on_meter_values.
+
+        :param connector_id:
+        :type connector_id: int
+        :param transaction_id:
+        :type transaction_id: int
+        :param meter_value:
+        :type meter_value: MeterValue
+        :param kwargs:
+        """
 
         meters = meter_value[0]['sampled_value']
         meter = 0
@@ -122,6 +158,16 @@ class ChargePoint(cp):
     def on_stop_transaction(
         self, transaction_id:int, timestamp:str, meter_stop: int, **kwargs
     ):
+        """on_stop_transaction.
+
+        :param transaction_id:
+        :type transaction_id: int
+        :param timestamp:
+        :type timestamp: str
+        :param meter_stop:
+        :type meter_stop: int
+        :param kwargs:
+        """
         id_status = True
         status = AuthorizationStatus.accepted if id_status is True else AuthorizationStatus.blocked
         stop_transaction(self.id, transaction_id, meter_stop)
@@ -133,4 +179,3 @@ class ChargePoint(cp):
                 expiry_date=datetime.utcnow().isoformat()
             )
         )
-
