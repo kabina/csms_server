@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "# deploy commit name : commit of `date`\n" >> src/app.py
 git commit -am "commit of `date`"
-git push
+echo "charger" | git push
