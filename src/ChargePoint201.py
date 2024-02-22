@@ -25,3 +25,10 @@ class ChargePoint(cp):
         return call_result.HeartbeatPayload(
             current_time=datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S") + "Z"
         )
+
+    @on("StatusNotification")
+    def on_heartbeat(self):
+        print("Got a StatusNotification!")
+        return call_result.StatusNotificationPayload(
+            current_time=datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S") + "Z"
+        )
