@@ -20,7 +20,7 @@ class ChargePoint(cp):
         )
 
     @on("Heartbeat")
-    def on_heartbeat(self, vendor_id):
+    def on_heartbeat(self):
         print("Got a Heartbeat!")
         return call_result.HeartbeatPayload(
             #current_time=datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S") + "Z"
