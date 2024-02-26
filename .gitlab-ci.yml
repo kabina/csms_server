@@ -148,8 +148,6 @@ zap_scan-job:
     - name: docker:dind
       alias: docker
       command: ["--tls=false"]
-  image:
-    name: owasp/zap2docker-stable:latest
   before_script:
     - mkdir -p /zap/wrk
   script:
