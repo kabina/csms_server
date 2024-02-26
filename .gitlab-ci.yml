@@ -139,11 +139,7 @@ zap_scan-job:
     DOCKER_HOST: tcp://docker:2375
     DOCKER_DRIVER: overlay2
     DOCKER_TLS_CERTDIR: ""
-    DOCKER_USERNAME: $CI_DOCKER_USER  # GitLab Docker 레지스트리 사용자 이름
-    DOCKER_PASSWORD: $CI_DOCKER_PASSWORD
-    DOCKER_IMAGE_NAME: "kabina/csms-server"
-    DOCKER_SOCKET_IMAGE_NAME: "kabina/socket-server"
-    DOCKER_IMAGE_TAG: "latest"
+    EXCLUDE_URIS: "https://192.168.0.108:5000/\nhttps://192.168.0.108:5000/latest/meta-data/"
   services:
     - name: docker:dind
       alias: docker
@@ -152,9 +148,10 @@ zap_scan-job:
     - mkdir -p /zap/wrk
   script:
     - echo "Starting zap-api-scan.py baseline scan"
+    - echo -e "$EXCLUDE_URIS" > exclude_uris.txt
       #- cp ./owasp-zap/warn-levels.config /zap/wrk
       #- zap-api-scan.py -t https://192.168.0.108:5000 -f openapi -I -r testreport.html
-    - docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://192.168.0.108:5000/ -f openapi  -I -r testreport.html
+    - docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://192.168.0.108:5000/ -f openapi  -I -r testreport.html --exclude-url-file exclude_uris.txt
 
       #- cp /zap/wrk/testreport.html testreport.html
   artifacts:
