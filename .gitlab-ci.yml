@@ -151,7 +151,7 @@ zap_scan-job:
     - echo -e "$EXCLUDE_URIS" > exclude_uris.txt
       #- cp ./owasp-zap/warn-levels.config /zap/wrk
       #- zap-api-scan.py -t https://192.168.0.108:5000 -f openapi -I -r testreport.html
-    - docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://192.168.0.108:5000/ -f openapi  -I -r testreport.html --exclude-url-file exclude_uris.txt
+    - docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://192.168.0.108:5000/ -f openapi  -I -r testreport.html 
 
       #- cp /zap/wrk/testreport.html testreport.html
   artifacts:
