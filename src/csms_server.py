@@ -17,7 +17,7 @@ SUBPROTOCOL = ['ocpp1.6', 'ocpp2.0.1']
 
 logging.basicConfig(level=logging.INFO)
 
-KAFKA_BOOTSTRAP_SERVERS = 'juha.iptime.org:29092'
+KAFKA_BOOTSTRAP_SERVERS = 'nheo.duckdns.org:29092'
 KAFKA_TOPIC_SOCKET_INFO = 'topic-socket-info'
 KAFKA_TOPIC_MESSAGES = 'topic-to-charger'
 
