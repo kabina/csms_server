@@ -1,16 +1,25 @@
-from ocpp.v16.enums import Action, RegistrationStatus, AuthorizationStatus
-import psycopg2, os
-from psycopg2 import sql
+"""
+csms_backend.py
+"""
+import os
 import json
 from datetime import datetime
+import psycopg2
+from psycopg2 import sql
 from TransactionGenerator import TransactionGenerator
+from ocpp.v16.enums import Action, RegistrationStatus, AuthorizationStatus
 
 trans_generator = TransactionGenerator()
 
 def get_crgr_no(trailing_url):
+    """get_crgr_no.
+
+    :param trailing_url:
+    """
     return trailing_url.split('/')[-1]
 
 def get_connection():
+    """get_connection."""
     connection = psycopg2.connect(
         user=os.getenv('DB_USER'),
         password=os.getenv('DB_PASSWORD'),
@@ -21,6 +30,11 @@ def get_connection():
     return connection
 
 def get_total_charged_value(crgr_no, trans_id):
+    """get_total_charged_value.
+
+    :param crgr_no:
+    :param trans_id:
+    """
     total_energy = 0
     connection = None
     try:
@@ -53,6 +67,11 @@ def get_total_charged_value(crgr_no, trans_id):
         return total_energy
 
 def proc_message(crgr_no, message):
+    """proc_message.
+
+    :param crgr_no:
+    :param message:
+    """
 
     ocpp_message = json.loads(message)
     print(ocpp_message)
@@ -66,18 +85,26 @@ def proc_message(crgr_no, message):
 
     connection = get_connection()
     cursor = connection.cursor()
-    current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + f".{datetime.now().microsecond}"
+    current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + \
+        f".{datetime.now().microsecond}"
     insert_query = sql.SQL("""
-                    INSERT INTO crgr_msgs (crgr_no, msg_id, msg_type, msg_body, regr_dttm, updt_dttm)
-                    VALUES (%s, %s, %s, %s, %s, %s)
-                """)
-    cursor.execute(insert_query, (crgr_no, msg_id, msg_type, msg_body, current_datetime, current_datetime))
+       INSERT INTO crgr_msgs (crgr_no, msg_id, msg_type, \
+       msg_body, regr_dttm, updt_dttm)
+       VALUES (%s, %s, %s, %s, %s, %s)
+       """)
+    cursor.execute(insert_query, (crgr_no, msg_id, msg_type, msg_body, \
+                                  current_datetime, current_datetime))
 
     connection.commit()
     cursor.close()
     connection.close()
 
 def get_idtags_status(id_tag, trailing_url):
+    """get_idtags_status.
+
+    :param id_tag:
+    :param trailing_url:
+    """
     """
     사용자 RF Card상태 체크 후 결과값 리턴
     이용정지/해지 : Blocked
@@ -130,6 +157,13 @@ def get_idtags_status(id_tag, trailing_url):
 
 
 def create_transaction(crgr_no, connector_id, id_tag, meter_start):
+    """create_transaction.
+
+    :param crgr_no:
+    :param connector_id:
+    :param id_tag:
+    :param meter_start:
+    """
     transaction_id = trans_generator.get_next_value()
 
     connection = get_connection()
@@ -148,6 +182,13 @@ def create_transaction(crgr_no, connector_id, id_tag, meter_start):
     return transaction_id
 
 def update_meter_value(crgr_no, connector_id, transaction_id, meter_value):
+    """update_meter_value.
+
+    :param crgr_no:
+    :param connector_id:
+    :param transaction_id:
+    :param meter_value:
+    """
 
     connection = get_connection()
     cursor = connection.cursor()
@@ -164,7 +205,8 @@ def update_meter_value(crgr_no, connector_id, transaction_id, meter_value):
                                         from crgr_trans 
                                         where crgr_no = %s and cntr_id = %s
                                         )
-                """, (meter, current_datetime, get_crgr_no(crgr_no), connector_id, transaction_id,
+                """, (meter, current_datetime, get_crgr_no(crgr_no), \
+                      connector_id, transaction_id,
                       get_crgr_no(crgr_no), connector_id))
 
     connection.commit()
@@ -174,11 +216,18 @@ def update_meter_value(crgr_no, connector_id, transaction_id, meter_value):
     return transaction_id
 
 def stop_transaction(crgr_no, transaction_id, meter_stop):
+    """stop_transaction.
+
+    :param crgr_no:
+    :param transaction_id:
+    :param meter_stop:
+    """
 
     connection = get_connection()
     cursor = connection.cursor()
 
-    current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + f".{datetime.now().microsecond}"
+    current_datetime = datetime.now().strftime("%Y-%m-%d %H:%M:%S") + \
+        f".{datetime.now().microsecond}"
     """
     특정 충전기의 StopTransaction에 따른 meter_stop, meter_stop_dttm Update
     """
@@ -191,7 +240,8 @@ def stop_transaction(crgr_no, transaction_id, meter_stop):
                                         where crgr_no = %s and
                                         trans_id = %s
                                         )
-                """, (meter_stop, current_datetime, current_datetime, get_crgr_no(crgr_no), transaction_id,
+                """, (meter_stop, current_datetime, current_datetime, \
+                      get_crgr_no(crgr_no), transaction_id,
                       get_crgr_no(crgr_no), transaction_id))
 
     connection.commit()
@@ -201,6 +251,13 @@ def stop_transaction(crgr_no, transaction_id, meter_stop):
     return transaction_id
 
 def update_charger_status(crgr_no, connector_id, status, error_code):
+    """update_charger_status.
+
+    :param crgr_no:
+    :param connector_id:
+    :param status:
+    :param error_code:
+    """
 
     connection = get_connection()
     cursor = connection.cursor()
@@ -224,6 +281,12 @@ def update_charger_status(crgr_no, connector_id, status, error_code):
 
 
 def check_connection(model, serial, auth_key) :
+    """check_connection.
+
+    :param model:
+    :param serial:
+    :param auth_key:
+    """
     """
     websocket connection 발생 시 적절한 충전기로 부터의 Connection인지 확인
 

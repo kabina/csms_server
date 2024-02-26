@@ -127,3 +127,13 @@ if __name__ == '__main__':
 # deploy commit name : commit of 2024. 02. 22. (목) 15:58:52 KST\n
 # deploy commit name : commit of 2024. 02. 22. (목) 16:08:17 KST\n
 # deploy commit name : commit of 2024. 02. 22. (목) 16:10:27 KST\n
+# deploy commit name : commit of 2024. 02. 22. (목) 17:51:12 KST\n
+# deploy commit name : commit of 2024. 02. 22. (목) 17:53:18 KST\n
+# deploy commit name : commit of 2024. 02. 22. (목) 17:54:33 KST\n
+# deploy commit name : commit of 2024. 02. 22. (목) 17:58:18 KST\n
+# deploy commit name : commit of 2024. 02. 23. (금) 09:47:13 KST\n
+# deploy commit name : commit of 2024. 02. 26. (월) 10:45:40 KST\n
+# deploy commit name : commit of 2024. 02. 26. (월) 10:52:18 KST\n
+# deploy commit name : commit of 2024. 02. 26. (월) 10:58:13 KST\n
+# deploy commit name : commit of 2024. 02. 26. (월) 12:01:14 KST\n
+# deploy commit name : commit of 2024. 02. 26. (월) 12:31:01 KST\n

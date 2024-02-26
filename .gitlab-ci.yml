@@ -134,15 +134,26 @@ deploy-job:      # This job runs in the deploy stage.
 zap_scan-job:
   needs: ["deploy-job"]
   stage: zap_scan
-  image:
-    name: owasp/zap2docker-stable:latest
+  image: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    EXCLUDE_URIS: "https://192.168.0.108:5000/\nhttps://192.168.0.108:5000/latest/meta-data/"
+  services:
+    - name: docker:dind
+      alias: docker
+      command: ["--tls=false"]
   before_script:
     - mkdir -p /zap/wrk
   script:
     - echo "Starting zap-api-scan.py baseline scan"
+    - echo -e "$EXCLUDE_URIS" > exclude_uris.txt
       #- cp ./owasp-zap/warn-levels.config /zap/wrk
-    - zap-api-scan.py -t https://192.168.0.108:5000 -f openapi -I -r testreport.html
+      #- zap-api-scan.py -t https://192.168.0.108:5000 -f openapi -I -r testreport.html
+    - docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://192.168.0.108:5000/ -f openapi  -I -r testreport.html 
+
       #- cp /zap/wrk/testreport.html testreport.html
   artifacts:
     paths:
-      - ${CI_PROJECT_DIR}/testreport.html
+      - testreport.html
