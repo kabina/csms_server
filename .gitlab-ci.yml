@@ -134,6 +134,20 @@ deploy-job:      # This job runs in the deploy stage.
 zap_scan-job:
   needs: ["deploy-job"]
   stage: zap_scan
+  image: docker
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+    DOCKER_USERNAME: $CI_DOCKER_USER  # GitLab Docker 레지스트리 사용자 이름
+    DOCKER_PASSWORD: $CI_DOCKER_PASSWORD
+    DOCKER_IMAGE_NAME: "kabina/csms-server"
+    DOCKER_SOCKET_IMAGE_NAME: "kabina/socket-server"
+    DOCKER_IMAGE_TAG: "latest"
+  services:
+    - name: docker:dind
+      alias: docker
+      command: ["--tls=false"]
   image:
     name: owasp/zap2docker-stable:latest
   before_script:
@@ -142,7 +156,7 @@ zap_scan-job:
     - echo "Starting zap-api-scan.py baseline scan"
       #- cp ./owasp-zap/warn-levels.config /zap/wrk
       #- zap-api-scan.py -t https://192.168.0.108:5000 -f openapi -I -r testreport.html
-    - docker run -v $(pwd):/zap/wrk/:rw zap-api-scan.py -t https://192.168.0.108:5000/ -f openapi  -I -r testreport.html
+    - docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-weekly zap-api-scan.py -t https://192.168.0.108:5000/ -f openapi  -I -r testreport.html
 
       #- cp /zap/wrk/testreport.html testreport.html
   artifacts:
